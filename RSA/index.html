@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="description" content="" />
+		<link rel="icon" href="/favicon.png" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Дискретна математика</title>
+		<title>Дискретна математика • RSA</title>
+
+		
+
+		<link rel="modulepreload" href="/_app/start-5cf58784.js">
+		<link rel="modulepreload" href="/_app/chunks/vendor-f2376ecb.js">
+		<link rel="modulepreload" href="/_app/pages/__layout.svelte-238f8391.js">
+		<link rel="modulepreload" href="/_app/pages/RSA.svelte-519785cc.js">
+		<link rel="modulepreload" href="/_app/chunks/Matrix-082d4e3e.js">
+		<link rel="stylesheet" href="/_app/assets/start-61d1577b.css">
+		<link rel="stylesheet" href="/_app/assets/pages/__layout.svelte-709a15de.css">
+		<link rel="stylesheet" href="/_app/assets/pages/RSA.svelte-7b075bca.css">
+		<link rel="stylesheet" href="/_app/assets/Matrix-bde9fb73.css">
+
+		<script type="module">
+			import { start } from "/_app/start-5cf58784.js";
+			start({
+				target: document.querySelector("#svelte"),
+				paths: {"base":"","assets":""},
+				session: {},
+				host: location.host,
+				route: true,
+				spa: false,
+				trailing_slash: "never",
+				hydrate: {
+					status: 200,
+					error: null,
+					nodes: [
+						import("/_app/pages/__layout.svelte-238f8391.js"),
+						import("/_app/pages/RSA.svelte-519785cc.js")
+					],
+					page: {
+						host: location.host, // TODO this is redundant
+						path: "\u002FRSA",
+						query: new URLSearchParams(""),
+						params: {}
+					}
+				}
+			});
+		</script>
+	</head>
+	<body>
+		<div id="svelte">
+
+
+
+
+<header class="svelte-6pdzn3"><span class="menu svelte-6pdzn3">☰</span> 
+    <span class="svelte-6pdzn3">Дискретна математика • RSA</span></header>
+
+<main class="svelte-6pdzn3">p: <input type="number" min="1" class="svelte-diqp5d  good" value="7">
+q: <input type="number" min="1" class="svelte-diqp5d  good" value="13">
+<br>
+n: <input type="number" min="1" disabled class="svelte-diqp5d" value="91">
+φ(n): 72
+<br>
+e: <input type="number" min="1" placeholder="5" class="svelte-diqp5d">
+d: <input type="number" min="1" placeholder="29" class="svelte-diqp5d">
+<br>
+
+<h3>Шифрування</h3>
+текст: <input class="svelte-diqp5d" value="Текст із прикладом"><br>
+
+    <div style="--size: 18" class="svelte-hvkme5"><span class="svelte-hvkme5">Т</span><span class="svelte-hvkme5">Е</span><span class="svelte-hvkme5">К</span><span class="svelte-hvkme5">С</span><span class="svelte-hvkme5">Т</span><span class="svelte-hvkme5">_</span><span class="svelte-hvkme5">І</span><span class="svelte-hvkme5">З</span><span class="svelte-hvkme5">_</span><span class="svelte-hvkme5">П</span><span class="svelte-hvkme5">Р</span><span class="svelte-hvkme5">И</span><span class="svelte-hvkme5">К</span><span class="svelte-hvkme5">Л</span><span class="svelte-hvkme5">А</span><span class="svelte-hvkme5">Д</span><span class="svelte-hvkme5">О</span><span class="svelte-hvkme5">М</span><span class="svelte-hvkme5">23</span><span class="svelte-hvkme5">7</span><span class="svelte-hvkme5">15</span><span class="svelte-hvkme5">22</span><span class="svelte-hvkme5">23</span><span class="svelte-hvkme5">1</span><span class="svelte-hvkme5">12</span><span class="svelte-hvkme5">10</span><span class="svelte-hvkme5">1</span><span class="svelte-hvkme5">20</span><span class="svelte-hvkme5">21</span><span class="svelte-hvkme5">11</span><span class="svelte-hvkme5">15</span><span class="svelte-hvkme5">16</span><span class="svelte-hvkme5">2</span><span class="svelte-hvkme5">6</span><span class="svelte-hvkme5">19</span><span class="svelte-hvkme5">17</span><span class="svelte-hvkme5">4</span><span class="svelte-hvkme5">63</span><span class="svelte-hvkme5">71</span><span class="svelte-hvkme5">29</span><span class="svelte-hvkme5">4</span><span class="svelte-hvkme5">1</span><span class="svelte-hvkme5">38</span><span class="svelte-hvkme5">82</span><span class="svelte-hvkme5">1</span><span class="svelte-hvkme5">76</span><span class="svelte-hvkme5">21</span><span class="svelte-hvkme5">72</span><span class="svelte-hvkme5">71</span><span class="svelte-hvkme5">74</span><span class="svelte-hvkme5">32</span><span class="svelte-hvkme5">41</span><span class="svelte-hvkme5">80</span><span class="svelte-hvkme5">75</span>
+</div>
+
+<h3>Дешифрування</h3>
+шифр: <input placeholder="4 63 71 29 4 1 38 82 1 76 21 72 71 74 32 41 80 75" class="svelte-diqp5d" value=""><br>
+<div style="--size: 18" class="svelte-hvkme5"><span class="svelte-hvkme5">4</span><span class="svelte-hvkme5">63</span><span class="svelte-hvkme5">71</span><span class="svelte-hvkme5">29</span><span class="svelte-hvkme5">4</span><span class="svelte-hvkme5">1</span><span class="svelte-hvkme5">38</span><span class="svelte-hvkme5">82</span><span class="svelte-hvkme5">1</span><span class="svelte-hvkme5">76</span><span class="svelte-hvkme5">21</span><span class="svelte-hvkme5">72</span><span class="svelte-hvkme5">71</span><span class="svelte-hvkme5">74</span><span class="svelte-hvkme5">32</span><span class="svelte-hvkme5">41</span><span class="svelte-hvkme5">80</span><span class="svelte-hvkme5">75</span><span class="svelte-hvkme5">23</span><span class="svelte-hvkme5">7</span><span class="svelte-hvkme5">15</span><span class="svelte-hvkme5">22</span><span class="svelte-hvkme5">23</span><span class="svelte-hvkme5">1</span><span class="svelte-hvkme5">12</span><span class="svelte-hvkme5">10</span><span class="svelte-hvkme5">1</span><span class="svelte-hvkme5">20</span><span class="svelte-hvkme5">21</span><span class="svelte-hvkme5">11</span><span class="svelte-hvkme5">15</span><span class="svelte-hvkme5">16</span><span class="svelte-hvkme5">2</span><span class="svelte-hvkme5">6</span><span class="svelte-hvkme5">19</span><span class="svelte-hvkme5">17</span><span class="svelte-hvkme5">Т</span><span class="svelte-hvkme5">Е</span><span class="svelte-hvkme5">К</span><span class="svelte-hvkme5">С</span><span class="svelte-hvkme5">Т</span><span class="svelte-hvkme5">_</span><span class="svelte-hvkme5">І</span><span class="svelte-hvkme5">З</span><span class="svelte-hvkme5">_</span><span class="svelte-hvkme5">П</span><span class="svelte-hvkme5">Р</span><span class="svelte-hvkme5">И</span><span class="svelte-hvkme5">К</span><span class="svelte-hvkme5">Л</span><span class="svelte-hvkme5">А</span><span class="svelte-hvkme5">Д</span><span class="svelte-hvkme5">О</span><span class="svelte-hvkme5">М</span>
+</div></main>
+
+
+
+			
+		</div>
+	</body>
+</html>
