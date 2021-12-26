@@ -11,7 +11,7 @@
 ЬПУХІТМЖФІЖТУЗУХМЖТДТТД"
     let shift = 5;
     $: res = msg.toUpperCase().split("")
-        .map(s => alphabet[(alphabet.indexOf(s) + shift) % len])
+        .map(s => alphabet[(alphabet.indexOf(s) + shift + len) % len])
         .join("");
     let chart: Record<string, [number,number]>;
     $: chart = alphabet.split("")
