@@ -8,6 +8,9 @@ const config = {
 	preprocess: preprocess(),
 
 	kit: {
+		paths: {
+		 	base: '/math-examples'
+		},
 		adapter: adapter({
 			pages: 'build',
 			assets: 'build',

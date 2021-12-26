@@ -1,4 +1,5 @@
 <script lant="ts">
+    import { base } from '$app/paths';
     import { page } from '$app/stores';
     import { fly, fade } from "svelte/transition";
 
@@ -31,7 +32,7 @@
         <h2>Сторінки</h2>
         {#each Object.entries(links) as [link, name]}
             <li>
-                <a href="./{link}" class:active={link === active} >
+                <a href="{base}/{link}" class:active={link === active} >
                     {name}
                 </a>
             </li>
