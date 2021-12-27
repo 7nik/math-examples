@@ -1,21 +1,48 @@
-<script>
-	export let matrix = [[]];
+<script lang="ts">
+	export let matrix: (string|number)[][] = [[]];
     export let colDir = false;
 	export let showRow = false;
 	export let showColumn = false;
-	export let mark1 = [];
-	export let mark2 = [];
-	const has = (arr, rr, cc) => arr && arr.find(({r, c}) => rr===r && cc===c);
+	export let showGrid = false;
+	export let marks: Record<string, {c:number,r:number}[]> = {};
+	$: markMap = Object.entries(marks).reduce((map, [k,arr]) =>{
+		arr.forEach(({r,c}) => {
+			const rc = `${r},${c}`;
+			if (map[rc]) {
+				map[rc] += ","+k;
+			} else {
+				map[rc] = k
+			}
+		});
+		return map;
+	}, {});
+	function marking(node:HTMLElement, params) {
+		function mark({r,c,markMap}) {
+			const color = markMap[`${r},${c}`]?.split(",");
+			if (!color) {
+				node.style.background = null;
+				return;
+			};
+			if (color.length === 1) {
+				node.style.background = color;
+			} else {
+				node.style.background = `linear-gradient(135deg, ${color[0]} 50%, ${color[1]} 50%)`;
+			}
+		}
+		mark(params);
+		return { update: mark };
+	}
 </script>
 
-<div style="--size: {matrix[0].length}" class:colDir>
-	{#each matrix as col, c}
-		{#each col as cell, r}
+<div style="--w: {colDir ? matrix.length : matrix[0].length}; --h: {colDir ? matrix[0].length : matrix.length}" 
+	class:colDir class:showGrid
+>
+	{#each matrix as row, r}
+		{#each row as cell, c}
 			<span 
-                class:row={showRow && !r} 
-                class:column={showColumn && !c}
-                class:mark1={has(mark1, r, c)} 
-                class:mark2={has(mark2, r, c)}
+                class:row={showRow && !r && !colDir || showRow && !c && colDir} 
+                class:column={showColumn && !c && !colDir || showColumn && !r && colDir}
+                use:marking={{r,c,markMap}}
             >{cell}</span>
 		{/each}
 	{/each}
@@ -25,17 +52,19 @@
 	div {
 		border: 1px solid black;
 		display: inline-grid;
-		grid-template-columns: repeat(var(--size), 25px);
+		grid-template-columns: repeat(var(--w), minmax(27px, auto));
+		grid-template-rows: repeat(var(--h), minmax(27px, auto));
 		grid-auto-flow: row;
 		text-align: center;
 		margin: 10px 10px 0 0;
 	}
     div.colDir {
-		grid-template-rows: repeat(var(--size), 25px);
 		grid-auto-flow: column;
     }
+	div.showGrid > span {
+		border: 1px solid black;
+	}
 	div * {
-		width: 21px;
 		padding: 2px
 	}
 	.row {
@@ -45,16 +74,5 @@
 	.column {
 		border-right: 1px solid black;
 		font-weight: bold;
-	}
-	.mark1 {
-		background: blue;
-		color: white;
-	}
-	.mark2 {
-		background: brown;
-		color: white;
-	}
-	.mark1.mark2 {
-		background: linear-gradient(135deg, blue 50%, brown 50%);
 	}
 </style>

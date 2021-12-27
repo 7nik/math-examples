@@ -119,8 +119,8 @@
 		sel -= playfair1input.slice(0, sel+1).match(/\s/g)?.length ?? 0;
 		let [a, b] = playfair1input.replaceAll(/\s/g, "").toUpperCase().slice(sel & ~1);
 		playfair1marks = {
-			mark1: [pos(a, playfair1fullkey), pos(b, playfair1fullkey)],
-			mark2: encodePlayfair(a, b, playfair1fullkey),
+			blue: [pos(a, playfair1fullkey), pos(b, playfair1fullkey)],
+			brown: encodePlayfair(a, b, playfair1fullkey),
 		};
 	}
 	
@@ -159,8 +159,8 @@
 		sel -= playfair2input.slice(0, sel+1).match(/\s/g)?.length ?? 0;
 		let [a, b] = playfair2input.replaceAll(/\s/g, "").toUpperCase().slice(sel & ~1);
 		playfair2marks = {
-			mark1: [pos(a, playfair2fullkey), pos(b, playfair2fullkey)],
-			mark2: decodePlayfair(a, b, playfair2fullkey),
+			blue: [pos(a, playfair2fullkey), pos(b, playfair2fullkey)],
+			brown: decodePlayfair(a, b, playfair2fullkey),
 		};
 	}
 
@@ -232,12 +232,12 @@
 		let [a, b] = dblsq1input.toUpperCase().slice(sel & ~1);
 		let [s1, s2] = doubleSquare(a, b, sq1, sq2);
 		dblsqMarks1 = {
-			mark1: [pos(a, sq1)],
-			mark2: b ? [s2] : [pos(a, sq1)],
+			blue: [pos(a, sq1)],
+			brown: b ? [s2] : [pos(a, sq1)],
 		};
 		dblsqMarks2 = {
-			mark1: [pos(b, sq2)],
-			mark2: b ? [s1] : null,
+			blue: [pos(b, sq2)],
+			brown: b ? [s1] : null,
 		};
 	}
 	function mark4 (ev: Event) {
@@ -251,12 +251,12 @@
 		let [a, b] = dblsq2input.toUpperCase().slice(sel & ~1);
 		let [s1, s2] = doubleSquare(a, b, sq2, sq1);
 		dblsqMarks1 = {
-			mark1: [pos(b, sq1)],
-			mark2: b ? [s1] : null,
+			blue: [pos(b, sq1)],
+			brown: b ? [s1] : null,
 		};
 		dblsqMarks2 = {
-			mark1: [pos(a, sq2)],
-			mark2: b ? [s2] : [pos(a, sq2)],
+			blue: [pos(a, sq2)],
+			brown: b ? [s2] : [pos(a, sq2)],
 		};
 	}
 </script>
@@ -264,18 +264,19 @@
 <h3>Шифр PLAYFAIR (зашифрувати)</h3>
 Ключ: <input bind:value={playfair1key} class:bad={playfair1bad1} /> <br>
 Текст: <input bind:value={playfair1input} class="input" class:bad={playfair1bad2} on:keyup={mark1} on:click={mark1} on:focus={mark1} on:blur={mark1} /> <br>
-<Matrix matrix={playfair1fullkey} {...playfair1marks} /> <br>
+<Matrix matrix={playfair1fullkey} marks={playfair1marks} /> <br>
 Шифровка: <span class="output">{playfair1result}</span>
 
 <h3>Шифр PLAYFAIR (розшифрувати)</h3>
 Ключ: <input bind:value={playfair2key} class:bad={playfair2bad1} /> <br>
 Шифровка: <input bind:value={playfair2input} class="input" class:bad={playfair2bad2} on:keyup={mark2} on:click={mark2} on:focus={mark2} on:blur={mark2} /> <br>
-<Matrix matrix={playfair2fullkey} {...playfair2marks} /> <br>
+<Matrix matrix={playfair2fullkey} marks={playfair2marks} /> <br>
 Текст: <span class="output">{playfair2result}</span>
 
 <h3>Шифр подвійного квадрата (зашифрувати)</h3>
 Текст: <input bind:value={dblsq1input} class="input" class:bad={dblsq1bad} on:keyup={mark3} on:click={mark3} on:focus={mark3} on:blur={mark3} /> <br>
-<Matrix matrix={sq1} {...dblsqMarks1} /> <Matrix matrix={sq2} {...dblsqMarks2} /> <br>
+<Matrix matrix={sq1} marks={dblsqMarks1} /> 
+<Matrix matrix={sq2} marks={dblsqMarks2} /> <br>
 Шифровка: "<span class="output">{dblsq1result}</span>"
 
 <h3>Шифр подвійного квадрата (розшифрувати)</h3>

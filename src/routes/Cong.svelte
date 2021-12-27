@@ -1,5 +1,5 @@
 <script>
-	import Cong from "$lib/Cong.svelte";
+	import Cong from "$lib/Congruence.svelte";
 	import pf from "primes-and-factors";
 	
 	let n = 3, e = 345, d = 8, r;
