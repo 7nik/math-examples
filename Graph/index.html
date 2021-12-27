@@ -6,198 +6,31 @@
 		<link rel="icon" href="/math-examples/favicon.png" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<title>Дискретна математика</title>
-		<title>Дискретна математика • Граф</title>
+		
 
 		
 
-		<link rel="modulepreload" href="/math-examples/_app/start-b558e24b.js">
-		<link rel="modulepreload" href="/math-examples/_app/chunks/vendor-f2376ecb.js">
+		<link rel="modulepreload" href="/math-examples/_app/start-b321b2ac.js">
+		<link rel="modulepreload" href="/math-examples/_app/chunks/vendor-c0bf6db0.js">
 		<link rel="modulepreload" href="/math-examples/_app/chunks/paths-28a87002.js">
-		<link rel="modulepreload" href="/math-examples/_app/pages/__layout.svelte-377e823c.js">
-		<link rel="modulepreload" href="/math-examples/_app/pages/Graph.svelte-0866995b.js">
 		<link rel="stylesheet" href="/math-examples/_app/assets/start-61d1577b.css">
-		<link rel="stylesheet" href="/math-examples/_app/assets/pages/__layout.svelte-709a15de.css">
-		<link rel="stylesheet" href="/math-examples/_app/assets/pages/Graph.svelte-8fb6ef29.css">
 
 		<script type="module">
-			import { start } from "/math-examples/_app/start-b558e24b.js";
+			import { start } from "/math-examples/_app/start-b321b2ac.js";
 			start({
 				target: document.querySelector("#svelte"),
 				paths: {"base":"/math-examples","assets":""},
 				session: {},
 				host: location.host,
 				route: true,
-				spa: false,
+				spa: true,
 				trailing_slash: "never",
-				hydrate: {
-					status: 200,
-					error: null,
-					nodes: [
-						import("/math-examples/_app/pages/__layout.svelte-377e823c.js"),
-						import("/math-examples/_app/pages/Graph.svelte-0866995b.js")
-					],
-					page: {
-						host: location.host, // TODO this is redundant
-						path: "\u002FGraph",
-						query: new URLSearchParams(""),
-						params: {}
-					}
-				}
+				hydrate: null
 			});
 		</script>
 	</head>
 	<body>
 		<div id="svelte">
-
-
-
-
-<header class="svelte-6pdzn3"><span class="menu svelte-6pdzn3">☰</span> 
-    <span class="svelte-6pdzn3">Дискретна математика • Граф</span></header>
-
-<main class="svelte-6pdzn3">Кількість вершин: 
-<input type="number" min="1" max="15" value="6"> <br>
-
-<div class="matrix svelte-gecdkk" style="--size: 6"><div class="svelte-gecdkk"></div>
-	<div class="header svelte-gecdkk">1</div><div class="header svelte-gecdkk">2</div><div class="header svelte-gecdkk">3</div><div class="header svelte-gecdkk">4</div><div class="header svelte-gecdkk">5</div><div class="header svelte-gecdkk">6</div>
-	
-	<div class="header svelte-gecdkk">1</div>
-		
-			<label class="svelte-gecdkk"><input type="checkbox" class="svelte-gecdkk" checked>
-					<input type="number" min="0" max="100"  class="svelte-gecdkk" value="95">
-				</label>
-			<label class="svelte-gecdkk"><input type="checkbox" class="svelte-gecdkk">
-					<input type="number" min="0" max="100" disabled class="svelte-gecdkk" value="42">
-				</label>
-			<label class="svelte-gecdkk"><input type="checkbox" class="svelte-gecdkk" checked>
-					<input type="number" min="0" max="100"  class="svelte-gecdkk" value="22">
-				</label>
-			<label class="svelte-gecdkk"><input type="checkbox" class="svelte-gecdkk" checked>
-					<input type="number" min="0" max="100"  class="svelte-gecdkk" value="32">
-				</label>
-			<label class="svelte-gecdkk"><input type="checkbox" class="svelte-gecdkk" checked>
-					<input type="number" min="0" max="100"  class="svelte-gecdkk" value="16">
-				</label>
-			<label class="svelte-gecdkk"><input type="checkbox" class="svelte-gecdkk">
-					<input type="number" min="0" max="100" disabled class="svelte-gecdkk" value="14">
-				</label><div class="header svelte-gecdkk">2</div>
-		
-			<label class="svelte-gecdkk"><input type="checkbox" class="svelte-gecdkk">
-					<input type="number" min="0" max="100" disabled class="svelte-gecdkk" value="42">
-				</label>
-			<label class="svelte-gecdkk"><input type="checkbox" class="svelte-gecdkk">
-					<input type="number" min="0" max="100" disabled class="svelte-gecdkk" value="38">
-				</label>
-			<label class="svelte-gecdkk"><input type="checkbox" class="svelte-gecdkk">
-					<input type="number" min="0" max="100" disabled class="svelte-gecdkk" value="49">
-				</label>
-			<label class="svelte-gecdkk"><input type="checkbox" class="svelte-gecdkk" checked>
-					<input type="number" min="0" max="100"  class="svelte-gecdkk" value="17">
-				</label>
-			<label class="svelte-gecdkk"><input type="checkbox" class="svelte-gecdkk" checked>
-					<input type="number" min="0" max="100"  class="svelte-gecdkk" value="63">
-				</label>
-			<label class="svelte-gecdkk"><input type="checkbox" class="svelte-gecdkk" checked>
-					<input type="number" min="0" max="100"  class="svelte-gecdkk" value="99">
-				</label><div class="header svelte-gecdkk">3</div>
-		
-			<label class="svelte-gecdkk"><input type="checkbox" class="svelte-gecdkk" checked>
-					<input type="number" min="0" max="100"  class="svelte-gecdkk" value="22">
-				</label>
-			<label class="svelte-gecdkk"><input type="checkbox" class="svelte-gecdkk">
-					<input type="number" min="0" max="100" disabled class="svelte-gecdkk" value="49">
-				</label>
-			<label class="svelte-gecdkk"><input type="checkbox" class="svelte-gecdkk">
-					<input type="number" min="0" max="100" disabled class="svelte-gecdkk" value="72">
-				</label>
-			<label class="svelte-gecdkk"><input type="checkbox" class="svelte-gecdkk" checked>
-					<input type="number" min="0" max="100"  class="svelte-gecdkk" value="85">
-				</label>
-			<label class="svelte-gecdkk"><input type="checkbox" class="svelte-gecdkk">
-					<input type="number" min="0" max="100" disabled class="svelte-gecdkk" value="76">
-				</label>
-			<label class="svelte-gecdkk"><input type="checkbox" class="svelte-gecdkk" checked>
-					<input type="number" min="0" max="100"  class="svelte-gecdkk" value="0">
-				</label><div class="header svelte-gecdkk">4</div>
-		
-			<label class="svelte-gecdkk"><input type="checkbox" class="svelte-gecdkk" checked>
-					<input type="number" min="0" max="100"  class="svelte-gecdkk" value="32">
-				</label>
-			<label class="svelte-gecdkk"><input type="checkbox" class="svelte-gecdkk" checked>
-					<input type="number" min="0" max="100"  class="svelte-gecdkk" value="17">
-				</label>
-			<label class="svelte-gecdkk"><input type="checkbox" class="svelte-gecdkk" checked>
-					<input type="number" min="0" max="100"  class="svelte-gecdkk" value="85">
-				</label>
-			<label class="svelte-gecdkk"><input type="checkbox" class="svelte-gecdkk">
-					<input type="number" min="0" max="100" disabled class="svelte-gecdkk" value="47">
-				</label>
-			<label class="svelte-gecdkk"><input type="checkbox" class="svelte-gecdkk" checked>
-					<input type="number" min="0" max="100"  class="svelte-gecdkk" value="26">
-				</label>
-			<label class="svelte-gecdkk"><input type="checkbox" class="svelte-gecdkk" checked>
-					<input type="number" min="0" max="100"  class="svelte-gecdkk" value="25">
-				</label><div class="header svelte-gecdkk">5</div>
-		
-			<label class="svelte-gecdkk"><input type="checkbox" class="svelte-gecdkk" checked>
-					<input type="number" min="0" max="100"  class="svelte-gecdkk" value="16">
-				</label>
-			<label class="svelte-gecdkk"><input type="checkbox" class="svelte-gecdkk" checked>
-					<input type="number" min="0" max="100"  class="svelte-gecdkk" value="63">
-				</label>
-			<label class="svelte-gecdkk"><input type="checkbox" class="svelte-gecdkk">
-					<input type="number" min="0" max="100" disabled class="svelte-gecdkk" value="76">
-				</label>
-			<label class="svelte-gecdkk"><input type="checkbox" class="svelte-gecdkk" checked>
-					<input type="number" min="0" max="100"  class="svelte-gecdkk" value="26">
-				</label>
-			<label class="svelte-gecdkk"><input type="checkbox" class="svelte-gecdkk" checked>
-					<input type="number" min="0" max="100"  class="svelte-gecdkk" value="46">
-				</label>
-			<label class="svelte-gecdkk"><input type="checkbox" class="svelte-gecdkk">
-					<input type="number" min="0" max="100" disabled class="svelte-gecdkk" value="56">
-				</label><div class="header svelte-gecdkk">6</div>
-		
-			<label class="svelte-gecdkk"><input type="checkbox" class="svelte-gecdkk">
-					<input type="number" min="0" max="100" disabled class="svelte-gecdkk" value="14">
-				</label>
-			<label class="svelte-gecdkk"><input type="checkbox" class="svelte-gecdkk" checked>
-					<input type="number" min="0" max="100"  class="svelte-gecdkk" value="99">
-				</label>
-			<label class="svelte-gecdkk"><input type="checkbox" class="svelte-gecdkk" checked>
-					<input type="number" min="0" max="100"  class="svelte-gecdkk" value="0">
-				</label>
-			<label class="svelte-gecdkk"><input type="checkbox" class="svelte-gecdkk" checked>
-					<input type="number" min="0" max="100"  class="svelte-gecdkk" value="25">
-				</label>
-			<label class="svelte-gecdkk"><input type="checkbox" class="svelte-gecdkk">
-					<input type="number" min="0" max="100" disabled class="svelte-gecdkk" value="56">
-				</label>
-			<label class="svelte-gecdkk"><input type="checkbox" class="svelte-gecdkk">
-					<input type="number" min="0" max="100" disabled class="svelte-gecdkk" value="30">
-				</label></div>
-
-<svg width="600" height="600" viewBox="-10 -10 220 220" xmlns="http://www.w3.org/2000/svg"><circle cx="100" cy="10" r="10" fill="none" stroke="hsl(0, 100%, 50%)" stroke-width="3.0303030303030303"></circle><polyline points="6.123233995736766e-17,-1 0.8660254037844387,0.49999999999999983" transform="translate(100, 100) scale(80)" fill="none" stroke="hsl(34, 100%, 50%)" stroke-width="0.012121212121212121"></polyline><polyline points="6.123233995736766e-17,-1 6.123233995736766e-17,1" transform="translate(100, 100) scale(80)" fill="none" stroke="hsl(51, 100%, 50%)" stroke-width="0.015909090909090907"></polyline><polyline points="6.123233995736766e-17,-1 -0.8660254037844385,0.5000000000000003" transform="translate(100, 100) scale(80)" fill="none" stroke="hsl(69, 100%, 50%)" stroke-width="0.009848484848484848"></polyline><polyline points="0.8660254037844386,-0.5 6.123233995736766e-17,1" transform="translate(100, 100) scale(80)" fill="none" stroke="hsl(137, 100%, 50%)" stroke-width="0.010227272727272727"></polyline><polyline points="0.8660254037844386,-0.5 -0.8660254037844385,0.5000000000000003" transform="translate(100, 100) scale(80)" fill="none" stroke="hsl(154, 100%, 50%)" stroke-width="0.02765151515151515"></polyline><polyline points="0.8660254037844386,-0.5 -0.8660254037844386,-0.5000000000000001" transform="translate(100, 100) scale(80)" fill="none" stroke="hsl(171, 100%, 50%)" stroke-width="0.04128787878787879"></polyline><polyline points="0.8660254037844387,0.49999999999999983 6.123233995736766e-17,1" transform="translate(100, 100) scale(80)" fill="none" stroke="hsl(206, 100%, 50%)" stroke-width="0.03598484848484849"></polyline><polyline points="0.8660254037844387,0.49999999999999983 -0.8660254037844386,-0.5000000000000001" transform="translate(100, 100) scale(80)" fill="none" stroke="hsl(240, 100%, 50%)" stroke-width="0.003787878787878788"></polyline><polyline points="6.123233995736766e-17,1 -0.8660254037844385,0.5000000000000003" transform="translate(100, 100) scale(80)" fill="none" stroke="hsl(274, 100%, 50%)" stroke-width="0.013636363636363636"></polyline><polyline points="6.123233995736766e-17,1 -0.8660254037844386,-0.5000000000000001" transform="translate(100, 100) scale(80)" fill="none" stroke="hsl(291, 100%, 50%)" stroke-width="0.013257575757575756"></polyline><circle cx="22.057713659400534" cy="145.00000000000003" r="10" fill="none" stroke="hsl(309, 100%, 50%)" stroke-width="1.5454545454545454"></circle><text x="100" y="0" font-size="7" font-weight="bold" text-anchor="middle" alignment-baseline="middle" stroke="hsl(0, 100%, 50%)" fill="white">95</text>
-					<text x="100" y="0" font-size="7" font-weight="bold" text-anchor="middle" alignment-baseline="middle" fill="white">95</text><text x="131.1769145362398" y="74" font-size="7" font-weight="bold" text-anchor="middle" alignment-baseline="middle" stroke="hsl(34, 100%, 50%)" fill="white">22</text>
-					<text x="131.1769145362398" y="74" font-size="7" font-weight="bold" text-anchor="middle" alignment-baseline="middle" fill="white">22</text><text x="100" y="92" font-size="7" font-weight="bold" text-anchor="middle" alignment-baseline="middle" stroke="hsl(51, 100%, 50%)" fill="white">32</text>
-					<text x="100" y="92" font-size="7" font-weight="bold" text-anchor="middle" alignment-baseline="middle" fill="white">32</text><text x="68.82308546376022" y="74.00000000000001" font-size="7" font-weight="bold" text-anchor="middle" alignment-baseline="middle" stroke="hsl(69, 100%, 50%)" fill="white">16</text>
-					<text x="68.82308546376022" y="74.00000000000001" font-size="7" font-weight="bold" text-anchor="middle" alignment-baseline="middle" fill="white">16</text><text x="131.1769145362398" y="126" font-size="7" font-weight="bold" text-anchor="middle" alignment-baseline="middle" stroke="hsl(137, 100%, 50%)" fill="white">17</text>
-					<text x="131.1769145362398" y="126" font-size="7" font-weight="bold" text-anchor="middle" alignment-baseline="middle" fill="white">17</text><text x="93.0717967697245" y="104.00000000000001" font-size="7" font-weight="bold" text-anchor="middle" alignment-baseline="middle" stroke="hsl(154, 100%, 50%)" fill="white">63</text>
-					<text x="93.0717967697245" y="104.00000000000001" font-size="7" font-weight="bold" text-anchor="middle" alignment-baseline="middle" fill="white">63</text><text x="93.07179676972449" y="60" font-size="7" font-weight="bold" text-anchor="middle" alignment-baseline="middle" stroke="hsl(171, 100%, 50%)" fill="white">99</text>
-					<text x="93.07179676972449" y="60" font-size="7" font-weight="bold" text-anchor="middle" alignment-baseline="middle" fill="white">99</text><text x="138.10511776651532" y="158" font-size="7" font-weight="bold" text-anchor="middle" alignment-baseline="middle" stroke="hsl(206, 100%, 50%)" fill="white">85</text>
-					<text x="138.10511776651532" y="158" font-size="7" font-weight="bold" text-anchor="middle" alignment-baseline="middle" fill="white">85</text><text x="106.92820323027551" y="103.99999999999999" font-size="7" font-weight="bold" text-anchor="middle" alignment-baseline="middle" stroke="hsl(240, 100%, 50%)" fill="white">0</text>
-					<text x="106.92820323027551" y="103.99999999999999" font-size="7" font-weight="bold" text-anchor="middle" alignment-baseline="middle" fill="white">0</text><text x="61.89488223348471" y="158" font-size="7" font-weight="bold" text-anchor="middle" alignment-baseline="middle" stroke="hsl(274, 100%, 50%)" fill="white">26</text>
-					<text x="61.89488223348471" y="158" font-size="7" font-weight="bold" text-anchor="middle" alignment-baseline="middle" fill="white">26</text><text x="61.8948822334847" y="114" font-size="7" font-weight="bold" text-anchor="middle" alignment-baseline="middle" stroke="hsl(291, 100%, 50%)" fill="white">25</text>
-					<text x="61.8948822334847" y="114" font-size="7" font-weight="bold" text-anchor="middle" alignment-baseline="middle" fill="white">25</text><text x="13.397459621556152" y="150.00000000000003" font-size="7" font-weight="bold" text-anchor="middle" alignment-baseline="middle" stroke="hsl(309, 100%, 50%)" fill="white">46</text>
-					<text x="13.397459621556152" y="150.00000000000003" font-size="7" font-weight="bold" text-anchor="middle" alignment-baseline="middle" fill="white">46</text><circle cx="100" cy="20" r="5" fill="black"></circle>
-  	<text x="100" y="20" font-size="7" font-weight="bold" text-anchor="middle" alignment-baseline="middle" fill="white">1</text><circle cx="169.28203230275508" cy="60" r="5" fill="black"></circle>
-  	<text x="169.28203230275508" y="60" font-size="7" font-weight="bold" text-anchor="middle" alignment-baseline="middle" fill="white">2</text><circle cx="169.2820323027551" cy="140" r="5" fill="black"></circle>
-  	<text x="169.2820323027551" y="140" font-size="7" font-weight="bold" text-anchor="middle" alignment-baseline="middle" fill="white">3</text><circle cx="100" cy="180" r="5" fill="black"></circle>
-  	<text x="100" y="180" font-size="7" font-weight="bold" text-anchor="middle" alignment-baseline="middle" fill="white">4</text><circle cx="30.717967697244916" cy="140.00000000000003" r="5" fill="black"></circle>
-  	<text x="30.717967697244916" y="140.00000000000003" font-size="7" font-weight="bold" text-anchor="middle" alignment-baseline="middle" fill="white">5</text><circle cx="30.717967697244916" cy="59.99999999999999" r="5" fill="black"></circle>
-  	<text x="30.717967697244916" y="59.99999999999999" font-size="7" font-weight="bold" text-anchor="middle" alignment-baseline="middle" fill="white">6</text></svg></main>
-
-
 
 			
 		</div>

@@ -1,1 +1,0 @@
-import{S as o,i as r,s as c,t as i,g as d,f as l,T as s,d as u}from"../chunks/vendor-f2376ecb.js";function f(a){let t;return{c(){t=i("Nan des ka?")},l(e){t=d(e,"Nan des ka?")},m(e,n){l(e,t,n)},p:s,i:s,o:s,d(e){e&&u(t)}}}class p extends o{constructor(t){super();r(this,t,null,f,c,{})}}export{p as default};
