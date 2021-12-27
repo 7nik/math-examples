@@ -10,17 +10,19 @@
 
 		
 
-		<link rel="modulepreload" href="/math-examples/_app/start-b321b2ac.js">
-		<link rel="modulepreload" href="/math-examples/_app/chunks/vendor-c0bf6db0.js">
+		<link rel="modulepreload" href="/math-examples/_app/start-03e7f360.js">
+		<link rel="modulepreload" href="/math-examples/_app/chunks/vendor-85ca8281.js">
 		<link rel="modulepreload" href="/math-examples/_app/chunks/paths-28a87002.js">
-		<link rel="modulepreload" href="/math-examples/_app/pages/__layout.svelte-ce4fb858.js">
-		<link rel="modulepreload" href="/math-examples/_app/pages/Cong.svelte-3d43ccd5.js">
+		<link rel="modulepreload" href="/math-examples/_app/pages/__layout.svelte-e5834bde.js">
+		<link rel="modulepreload" href="/math-examples/_app/pages/Cong.svelte-947ffe25.js">
+		<link rel="modulepreload" href="/math-examples/_app/chunks/Matrix-7920b590.js">
 		<link rel="stylesheet" href="/math-examples/_app/assets/start-61d1577b.css">
 		<link rel="stylesheet" href="/math-examples/_app/assets/pages/__layout.svelte-709a15de.css">
-		<link rel="stylesheet" href="/math-examples/_app/assets/pages/Cong.svelte-c65a8b2a.css">
+		<link rel="stylesheet" href="/math-examples/_app/assets/pages/Cong.svelte-e1ef687c.css">
+		<link rel="stylesheet" href="/math-examples/_app/assets/Matrix-88e235d9.css">
 
 		<script type="module">
-			import { start } from "/math-examples/_app/start-b321b2ac.js";
+			import { start } from "/math-examples/_app/start-03e7f360.js";
 			start({
 				target: document.querySelector("#svelte"),
 				paths: {"base":"/math-examples","assets":""},
@@ -33,8 +35,8 @@
 					status: 200,
 					error: null,
 					nodes: [
-						import("/math-examples/_app/pages/__layout.svelte-ce4fb858.js"),
-						import("/math-examples/_app/pages/Cong.svelte-3d43ccd5.js")
+						import("/math-examples/_app/pages/__layout.svelte-e5834bde.js"),
+						import("/math-examples/_app/pages/Cong.svelte-947ffe25.js")
 					],
 					page: {
 						host: location.host, // TODO this is redundant
@@ -65,23 +67,15 @@
 <h3>Завдання 2 </h3>
 <input type="number" class="svelte-4wbsvd" value="64">x ≡ <input type="number" class="svelte-4wbsvd" value="5"> (mod <input type="number" class="svelte-4wbsvd" value="13">)
 <br>
-<div style="--size:6" class="svelte-cvt5wg"><b class="svelte-cvt5wg">k</b>
-	<span class="svelte-cvt5wg">-1</span>
-	<span class="svelte-cvt5wg">0</span><span class="svelte-cvt5wg">1</span><span class="svelte-cvt5wg">2</span><span class="svelte-cvt5wg lit1">3</span>
-	
-	<b class="svelte-cvt5wg">q<sub>k</sub></b>
-	<span class="svelte-cvt5wg">/////</span>
-	<span class="svelte-cvt5wg">0</span><span class="svelte-cvt5wg">4</span><span class="svelte-cvt5wg">1</span><span class="svelte-cvt5wg">12</span>
-	
-	<b class="svelte-cvt5wg">P<sub>k</sub></b>
-	<span class="svelte-cvt5wg">1</span>
-	<span class="svelte-cvt5wg">0</span><span class="svelte-cvt5wg">1</span><span class="svelte-cvt5wg lit2">1</span><span class="svelte-cvt5wg">13</span>
-	
-	<b class="svelte-cvt5wg">Q<sub>k</sub></b>
-	<span class="svelte-cvt5wg">0</span>
-	<span class="svelte-cvt5wg">1</span><span class="svelte-cvt5wg">4</span><span class="svelte-cvt5wg">5</span><span class="svelte-cvt5wg">64</span></div>
+<details class="svelte-dpl67z"><summary class="svelte-dpl67z">Рівняння</summary>
+	13 = 64*<span class="svelte-dpl67z">0</span> + 13 <br>64 = 13*<span class="svelte-dpl67z">4</span> + 12 <br>13 = 12*<span class="svelte-dpl67z">1</span> + 1 <br>12 = 1*<span class="svelte-dpl67z">12</span> + 0 <br></details>
 
-x ≡ (-1)<sup class="lit1 svelte-cvt5wg">3</sup>*<span class="lit2 svelte-cvt5wg">1</span>*5 (mod13)
+<div style="--w: 6; --h: 4" class="svelte-1rxlfa7  showGrid"><span class="svelte-1rxlfa7  column">k</span><span class="svelte-1rxlfa7">-1</span><span class="svelte-1rxlfa7">0</span><span class="svelte-1rxlfa7">1</span><span class="svelte-1rxlfa7">2</span><span class="svelte-1rxlfa7">3</span><span class="svelte-1rxlfa7  column">qk</span><span class="svelte-1rxlfa7">/////</span><span class="svelte-1rxlfa7">0</span><span class="svelte-1rxlfa7">4</span><span class="svelte-1rxlfa7">1</span><span class="svelte-1rxlfa7">12</span><span class="svelte-1rxlfa7  column">Pk</span><span class="svelte-1rxlfa7">1</span><span class="svelte-1rxlfa7">0</span><span class="svelte-1rxlfa7">1</span><span class="svelte-1rxlfa7">1</span><span class="svelte-1rxlfa7">13</span><span class="svelte-1rxlfa7  column">Qk</span><span class="svelte-1rxlfa7">0</span><span class="svelte-1rxlfa7">1</span><span class="svelte-1rxlfa7">4</span><span class="svelte-1rxlfa7">5</span><span class="svelte-1rxlfa7">64</span>
+</div>
+
+<br>
+
+x ≡ (-1)<sup class="lit1 svelte-dpl67z">3</sup>*<span class="lit2 svelte-dpl67z">1</span>*5 (mod13)
 <br>
 x ≡ 8 (mod13)
 <br>
@@ -91,23 +85,15 @@ x ≡ 8 (mod13)
 <input type="number" class="svelte-4wbsvd" value="5">x + <input type="number" class="svelte-4wbsvd" value="7"> y = <input type="number" class="svelte-4wbsvd" value="11">
 <br>
 5x	≡ 4 (mod7)
-<div style="--size:5" class="svelte-cvt5wg"><b class="svelte-cvt5wg">k</b>
-	<span class="svelte-cvt5wg">-1</span>
-	<span class="svelte-cvt5wg">0</span><span class="svelte-cvt5wg">1</span><span class="svelte-cvt5wg lit1">2</span>
-	
-	<b class="svelte-cvt5wg">q<sub>k</sub></b>
-	<span class="svelte-cvt5wg">/////</span>
-	<span class="svelte-cvt5wg">1</span><span class="svelte-cvt5wg">2</span><span class="svelte-cvt5wg">2</span>
-	
-	<b class="svelte-cvt5wg">P<sub>k</sub></b>
-	<span class="svelte-cvt5wg">1</span>
-	<span class="svelte-cvt5wg">1</span><span class="svelte-cvt5wg lit2">3</span><span class="svelte-cvt5wg">7</span>
-	
-	<b class="svelte-cvt5wg">Q<sub>k</sub></b>
-	<span class="svelte-cvt5wg">0</span>
-	<span class="svelte-cvt5wg">1</span><span class="svelte-cvt5wg">2</span><span class="svelte-cvt5wg">5</span></div>
+<details class="svelte-dpl67z"><summary class="svelte-dpl67z">Рівняння</summary>
+	7 = 5*<span class="svelte-dpl67z">1</span> + 2 <br>5 = 2*<span class="svelte-dpl67z">2</span> + 1 <br>2 = 1*<span class="svelte-dpl67z">2</span> + 0 <br></details>
 
-x ≡ (-1)<sup class="lit1 svelte-cvt5wg">2</sup>*<span class="lit2 svelte-cvt5wg">3</span>*4 (mod7)
+<div style="--w: 5; --h: 4" class="svelte-1rxlfa7  showGrid"><span class="svelte-1rxlfa7  column">k</span><span class="svelte-1rxlfa7">-1</span><span class="svelte-1rxlfa7">0</span><span class="svelte-1rxlfa7">1</span><span class="svelte-1rxlfa7">2</span><span class="svelte-1rxlfa7  column">qk</span><span class="svelte-1rxlfa7">/////</span><span class="svelte-1rxlfa7">1</span><span class="svelte-1rxlfa7">2</span><span class="svelte-1rxlfa7">2</span><span class="svelte-1rxlfa7  column">Pk</span><span class="svelte-1rxlfa7">1</span><span class="svelte-1rxlfa7">1</span><span class="svelte-1rxlfa7">3</span><span class="svelte-1rxlfa7">7</span><span class="svelte-1rxlfa7  column">Qk</span><span class="svelte-1rxlfa7">0</span><span class="svelte-1rxlfa7">1</span><span class="svelte-1rxlfa7">2</span><span class="svelte-1rxlfa7">5</span>
+</div>
+
+<br>
+
+x ≡ (-1)<sup class="lit1 svelte-dpl67z">2</sup>*<span class="lit2 svelte-dpl67z">3</span>*4 (mod7)
 <br>
 x ≡ 5 (mod7)
 <br>
