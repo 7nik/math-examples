@@ -75,7 +75,6 @@
 	function resizable (node:Element, {i1, i2}: {i1:number, i2:number}) {
 		let x:number, w:number;
 		function resize (ev: Event) {
-			console.log((ev as MouseEvent).clientX);
 			matrix[i1][i2].w = Math.max(0, Math.min(100, w + ((ev as MouseEvent).clientX-x)/3)|0);
 		}
 		function start (ev: Event) {
