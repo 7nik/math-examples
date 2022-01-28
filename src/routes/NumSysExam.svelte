@@ -34,10 +34,10 @@
 30 154 6 313 6 215 8 144 5 72 8 212 4 143 6 5
 31 121 6 223 4 103 4 222 3 45 6 51 6 105 6 4`.split("\n");
 	
-	let value = 1, numbers = [], variant, g, valid = false, trans = [], acts = [];
+	let value = 1, numbers = [], variant:string, g:number, valid = false, trans:(string|number)[][] = [], acts:(string|number)[][] = [];
 	const vars = ["a", "b", "c", "d", "k", "m", "p"];
 	const actnames = ["a*b", "a*b+c", "d+k", "(d+k)*m", "(d+k)*m-p", ["a*b+c","(d+k)*m-p"]];
-	const str = (n:number, gg:number = g):string => {
+	const str = (n:number|string, gg:number = g):string => {
 		try {
 			return n.toString(gg || g);
 		} catch (ex) {
@@ -49,8 +49,8 @@
 		const nums = data[value]?.split(" ").filter(s => s);
 		valid = nums?.length === 16;
 		if (!valid) break $;
-		variant = nums.shift();
-		g = nums.pop();
+		variant = nums.shift() ?? "";
+		g = +(nums.pop() ?? "");
 		numbers = [];
 		trans = [];
 		for (let i = 0; i < nums.length; i += 2) {
@@ -61,13 +61,13 @@
 		const [a, b, c, d, k, m, p] = numbers;
 		acts = [];
 		acts.push([a, "*", b, a*b]);
-		acts.push([acts[0][3], "+", c, acts[0][3] + c]);
+		acts.push([acts[0][3], "+", c, +acts[0][3] + c]);
 		acts.push([d, "+", k, d+k]);
-		acts.push([acts[2][3], "*", m, acts[2][3]*m]);
-		acts.push([acts[3][3], "-", p, acts[3][3] - p]);
+		acts.push([acts[2][3], "*", m, +acts[2][3]*m]);
+		acts.push([acts[3][3], "-", p, +acts[3][3] - p]);
 		const res = [acts[1][3], "/", acts[4][3]];
-		res.push(Math.trunc(res[0]/res[2]));
-		res.push(res[0] - res[2]*res[3]);
+		res.push(Math.trunc(+res[0]/+res[2]));
+		res.push(+res[0] - +res[2]*+res[3]);
 		res.push(res[2]);
 		acts.push(res);
 	}
@@ -87,12 +87,12 @@
 	</div>
 
 	<h4>Перетворення в g-ічну систему</h4>
-	{#each trans as [a, gg, n], i}
+	{#each trans as [_, __, n], i}
 		{vars[i]} = <input required pattern={str(n)} value={str(n)}> <sub>{g}</sub> <br>
 	{/each}
 	
 	<h4>Виконання операцій</h4>
-	{#each acts as [a, op, b, res, f1, f2], i}
+	{#each acts as [_, __, ___, res, f1, f2], i}
         {#if Array.isArray(actnames[i])}
             <Fraction numerator="{actnames[i][0]}" denominator="{actnames[i][1]}" />
         {:else}

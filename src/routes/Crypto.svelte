@@ -9,15 +9,16 @@
 		}
 		return matrix;
 	};
-	const transpose = (matrix: any[][]) => {
-		const m = [];
+	const transpose = <T extends unknown>(matrix: T[][]) => {
+		const m: T[][] = [];
 		matrix.forEach((row, r) => row.forEach((cell, c) => { 
 			if (!m[c]) m[c] = [];
 			m[c][r] = cell;
 		}));
 		return m;
 	};
-	const comparator = new Intl.Collator("ua").compare;
+	const _comparator = new Intl.Collator("ua").compare;
+	const comparator = (a:string[], b:string[]) => _comparator(a.toString(), b.toString());
 	
 	let oneDInput = "УЧБОВИЙ_ПОСІБНИК";
 	let oneDKey = "ГОРЩИК";
@@ -41,7 +42,7 @@
 	let twoDInput = "ВАЖЛИВЕ_ЗНАЧЕННЯ";
 	let twoDKey1 = "1973";
 	let twoDKey2 = "1649";
-	let twoDSize:number, twoDGrid1:string[][], twoDGrid2:string[][], twoDGrid3:string[][], twoDResult:string;
+	let twoDGrid1:string[][], twoDGrid2:string[][], twoDGrid3:string[][], twoDResult:string;
 	let twoDBad:boolean;
 	$: {
 		twoDBad = !twoDKey1 || !twoDKey2;
@@ -51,7 +52,6 @@
 			return twoDKey1[i-1].concat(twoDInput.slice((i-1)*twoDKey2.length, (i)*twoDKey2.length)).split("");
 		});
 		twoDGrid1 = fillHoles(twoDGrid1);
-        // @ts-ignore
 		twoDGrid2 = twoDGrid1.slice().sort(comparator);
 		twoDGrid3 = transpose(transpose(twoDGrid2).sort(comparator));
 		twoDResult = transpose(twoDGrid3.slice(1))
@@ -77,14 +77,14 @@
 		ttwoDGrid1 = transpose(ttwoDGrid1);
 		ttwoDGrid1 = fillHoles(ttwoDGrid1);
 		ttwoDGrid2 = transpose(ttwoDGrid1);
-		ttwoDGrid2 = ttwoDGrid2.map((_, i) => {
-			if (!i) return _;
-			return ttwoDGrid2.find((col) => col[0] === ttwoDKey2[i-1]);
+		ttwoDGrid2 = ttwoDGrid2.map((col, i) => {
+			if (!i) return col;
+			return ttwoDGrid2.find((col) => col[0] === ttwoDKey2[i-1]) ?? [];
 		});
 		ttwoDGrid2 = transpose(ttwoDGrid2);
-		ttwoDGrid3 = ttwoDGrid2.map((_, i) => {
-			if (!i) return _;
-			return ttwoDGrid2.find((col) => col[0] === ttwoDKey1[i-1]);
+		ttwoDGrid3 = ttwoDGrid2.map((col, i) => {
+			if (!i) return col;
+			return ttwoDGrid2.find((col) => col[0] === ttwoDKey1[i-1]) ?? [];
 		});
 		ttwoDResult = transpose(ttwoDGrid3.slice(1))
 			.map(row => row.join(""))
@@ -94,7 +94,7 @@
 	
 	let gridInput = "ПІДКУП ПЕРСОНАЛУ";
 	let gridParams = "4 3 8 10 13";
-	let gridGrids = [], gridResGrid:string[][], gridResult:string;
+	let gridGrids:string[][][] = [], gridResGrid:string[][], gridResult:string;
 	let gridBad:boolean;
 	$: {
 		let [size, ...holes] = gridParams.split(/\s+/).filter(s => s).map(Number);
@@ -119,7 +119,7 @@
 		gridResGrid = Array(size).fill(1).map((_, c) => Array(size).fill(1).map((_, r) => 
 			gridGrids[0][c][r] || gridGrids[1][c][r] || gridGrids[2][c][r] || gridGrids[3][c][r] || "_"
 		));
-		gridGrids.forEach((m, i) => m.forEach((col, c) => col.forEach((cell, r) => { if (!cell) m[c][r] = "·"; })));
+		gridGrids.forEach((m) => m.forEach((col, c) => col.forEach((cell, r) => { if (!cell) m[c][r] = "·"; })));
 		gridResult = transpose(gridResGrid).map(col => col.join("")).join("");
 	}
 	

@@ -15,7 +15,7 @@
         .join("");
     let chart: Record<string, [number,number]>;
     $: chart = alphabet.split("")
-        .reduce((map, s) => {
+        .reduce((map: Record<string,[number,number]>, s) => {
             map[s] = [
                 (msg.toUpperCase().split(s).length-1)/msg.length,
                 (res.split(s).length-1)/res.length,

@@ -1,11 +1,11 @@
 <script lang="ts">
-	export let matrix: (string|number)[][] = [[]];
+	export let matrix: {}[][] = [[]];
     export let colDir = false;
 	export let showRow = false;
 	export let showColumn = false;
 	export let showGrid = false;
 	export let marks: Record<string, {c:number,r:number}[]> = {};
-	$: markMap = Object.entries(marks).reduce((map, [k,arr]) =>{
+	$: markMap = Object.entries(marks).reduce((map: Record<string,string>, [k,arr]) =>{
 		arr.forEach(({r,c}) => {
 			const rc = `${r},${c}`;
 			if (map[rc]) {
@@ -16,15 +16,20 @@
 		});
 		return map;
 	}, {});
-	function marking(node:HTMLElement, params) {
-		function mark({r,c,markMap}) {
+	type Mark = {
+		r: number,
+		c: number,
+		markMap: Record<string, string>,
+	};
+	function marking(node:HTMLElement, params:Mark) {
+		function mark({r, c, markMap}: Mark) {
 			const color = markMap[`${r},${c}`]?.split(",");
 			if (!color) {
-				node.style.background = null;
+				node.style.background = "none";
 				return;
 			};
 			if (color.length === 1) {
-				node.style.background = color;
+				node.style.background = color[0];
 			} else {
 				node.style.background = `linear-gradient(135deg, ${color[0]} 50%, ${color[1]} 50%)`;
 			}

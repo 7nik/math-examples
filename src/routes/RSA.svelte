@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Matrix from "$lib/Matrix.svelte";
-import pf from "primes-and-factors";
+	import pf from "primes-and-factors";
 	
 	const alphabet = "?_АБВГДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯ.";
 	
@@ -51,7 +51,7 @@ import pf from "primes-and-factors";
 	$: code2 = rsaEncoded.join(" ");
 	$: rawNumbers2 = (code1 || code2).match(/\d+/g) ?? [];
 	$: rsaDecoded = n ? rawNumbers2.map(x => BigInt(x) ** BigInt(dVal || dHint) % BigInt(n)) : [];
-	$: output = rsaDecoded.map((n) => alphabet[n.toString()] || "?")
+	$: output = rsaDecoded.map((n) => alphabet[Number(n)] || "?")
 	
 </script>
 

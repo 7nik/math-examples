@@ -24,7 +24,7 @@
 		const hue = Math.round(360*(a*n - a*(a-1)/2 + b-a) / (n*(n+1)/2));
 		return `hsl(${hue}, 100%, 50%)`; 
 	}
-	function mid(p1: Point, p2: Point, ax:string) { 
+	function mid(p1: Point, p2: Point, ax:"x"|"y") { 
 		return (p1?.[ax]*(p1?.i%2?9:11) + p2?.[ax]*(p1?.i%2?11:9))/20; 
 	}
 
@@ -39,7 +39,7 @@
 			dragging.x2 = ev.offsetX/30*11-10;
 			dragging.y2 = ev.offsetY/30*11-10;
 		}
-		function endDragging(ev: MouseEvent) {
+		function endDragging(ev: Event) {
 			if (!dragging) return;
 			if (ev.target instanceof SVGCircleElement) {
 				matrix[dragging.i][index].enabled = true;
@@ -49,7 +49,7 @@
 			node.closest("svg")?.removeEventListener("mouseup", endDragging);
 			node.closest("svg")?.removeEventListener("mousemove", drag);
 		}
-		function startDragging(ev: MouseEvent) {
+		function startDragging() {
 			dragging = {
 				i: index,
 				x1: M+pos[index].x*S1,
@@ -72,15 +72,15 @@
 		}
 	}
 
-	function resizable (node:Element, {i1, i2}) {
+	function resizable (node:Element, {i1, i2}: {i1:number, i2:number}) {
 		let x:number, w:number;
-		function resize (ev: MouseEvent) {
-			console.log(ev.clientX);
-			matrix[i1][i2].w = Math.max(0, Math.min(100, w + (ev.clientX-x)/3)|0);
+		function resize (ev: Event) {
+			console.log((ev as MouseEvent).clientX);
+			matrix[i1][i2].w = Math.max(0, Math.min(100, w + ((ev as MouseEvent).clientX-x)/3)|0);
 		}
-		function start (ev: MouseEvent) {
+		function start (ev: Event) {
 			w = matrix[i1][i2].w;
-			x = ev.clientX;
+			x = (ev as MouseEvent).clientX;
 			window.addEventListener("mousemove", resize);
 			window.addEventListener("mouseup", () => {
 				window.removeEventListener("mousemove", resize);

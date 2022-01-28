@@ -114,7 +114,7 @@
 			playfair1marks = {};
 			return;
 		}
-		let sel = (ev.target as HTMLInputElement).selectionStart;
+		let sel = (ev.target as HTMLInputElement).selectionStart || 0;
 		if ((sel&-1) === ((ev.target as HTMLInputElement).value.length&-1)) sel -= 1;
 		sel -= playfair1input.slice(0, sel+1).match(/\s/g)?.length ?? 0;
 		let [a, b] = playfair1input.replaceAll(/\s/g, "").toUpperCase().slice(sel & ~1);
@@ -154,7 +154,7 @@
 			playfair2marks = {};
 			return;
 		}
-		let sel = (ev.target as HTMLInputElement).selectionStart;
+		let sel = (ev.target as HTMLInputElement).selectionStart || 0;
 		if ((sel&-1) === ((ev.target as HTMLInputElement).value.length&-1)) sel -= 1;
 		sel -= playfair2input.slice(0, sel+1).match(/\s/g)?.length ?? 0;
 		let [a, b] = playfair2input.replaceAll(/\s/g, "").toUpperCase().slice(sel & ~1);
@@ -219,15 +219,15 @@
 		dblsq2result = dblsq2chars.map(({r,c,sq}) => sq ? sq1[r]?.[c] : sq2[r]?.[c]).join("");
 	}
 	
-	let dblsqMarks1 = {};
-	let dblsqMarks2 = {};
+	let dblsqMarks1: Record<string, Point[]> = {};
+	let dblsqMarks2: Record<string, Point[]> = {};
 	function mark3 (ev: Event) {
 		if (ev.type === "blur") {
 			dblsqMarks1 = {};
 			dblsqMarks2 = {};
 			return;
 		} 
-		let sel = (ev.target as HTMLInputElement).selectionStart;
+		let sel = (ev.target as HTMLInputElement).selectionStart || 0;
 		if ((sel&-1) === ((ev.target as HTMLInputElement).value.length&-1)) sel -= 1;
 		let [a, b] = dblsq1input.toUpperCase().slice(sel & ~1);
 		let [s1, s2] = doubleSquare(a, b, sq1, sq2);
@@ -237,7 +237,7 @@
 		};
 		dblsqMarks2 = {
 			blue: [pos(b, sq2)],
-			brown: b ? [s1] : null,
+			brown: b ? [s1] : [],
 		};
 	}
 	function mark4 (ev: Event) {
@@ -246,13 +246,13 @@
 			dblsqMarks2 = {};
 			return;
 		} 
-		let sel = (ev.target as HTMLInputElement).selectionStart;
+		let sel = (ev.target as HTMLInputElement).selectionStart || 0;
 		if ((sel&-1) === ((ev.target as HTMLInputElement).value.length&-1)) sel -= 1;
 		let [a, b] = dblsq2input.toUpperCase().slice(sel & ~1);
 		let [s1, s2] = doubleSquare(a, b, sq2, sq1);
 		dblsqMarks1 = {
 			blue: [pos(b, sq1)],
-			brown: b ? [s1] : null,
+			brown: b ? [s1] : [],
 		};
 		dblsqMarks2 = {
 			blue: [pos(a, sq2)],

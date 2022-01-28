@@ -1,15 +1,15 @@
-<script>
+<script lang="ts">
 	import Cong from "$lib/Congruence.svelte";
 	import pf from "primes-and-factors";
 	
-	let n = 3, e = 345, d = 8, r;
-	$: phi = pf.getFrequency(d).reduce((prod, { factor, times }) => prod * (factor - 1) / factor, d);
+	let n = 3, e = 345, d = 8, r: number;
+	$: phi = pf.getFrequency(d).reduce((prod, { factor }) => prod * (factor - 1) / factor, d);
 	$: r = n ** (e % phi) % d;
 	
-	let a = 64, b = 5, m = 13, res;
+	let a = 64, b = 5, m = 13, res: number;
 	$: check = a*res%m;
 	
-	let a2 = 5, bb2 = 7, cc2 = 11, res2;
+	let a2 = 5, bb2 = 7, cc2 = 11, res2: number;
 	$: b2 = Math.abs(bb2);
 	$: c2 = cc2 % b2;
 	$: tplus = (cc2 - a2*res2) / bb2;

@@ -1,4 +1,4 @@
-<script lant="ts">
+<script lang="ts">
     import { base } from '$app/paths';
     import { page } from '$app/stores';
     import { fly, fade } from "svelte/transition";
@@ -14,6 +14,8 @@
         RSA: "RSA",
         Graph: "Граф",
     }
+    let active: keyof (typeof links);
+    // @ts-ignore
     $: active = Object.keys(links).find(link => $page.path.endsWith(link));
     $: title = `Дискретна математика • ${links[active] ?? "Головна"}`;
     let showMenu = $page.path.endsWith("/");

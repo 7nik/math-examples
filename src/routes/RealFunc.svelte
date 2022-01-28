@@ -9,7 +9,7 @@
 	
 	const tau = (canon: Canon) => canon.reduce((prod, { times }) => prod * (times + 1), 1);
 	const sigma = (canon: Canon) => canon.reduce((prod, { factor, times }) => prod * (factor ** (times + 1) - 1) / (factor - 1), 1);
-	const phi = (canon: Canon, n: number) => canon.reduce((prod, { factor, times }) => prod * (factor - 1) / factor, n);
+	const phi = (canon: Canon, n: number) => canon.reduce((prod, { factor }) => prod * (factor - 1) / factor, n);
 </script>
 
 <input type="number" min=2 bind:value />
@@ -60,13 +60,13 @@
 &phi;({value})
 = 
 {value}
-{#each canon as { factor }, i}
+{#each canon as { factor } }
 	&nbsp;· 
-    <Fraction numerator="{factor} - 1" denominator={factor} />
+    <Fraction numerator="{factor} - 1" denominator={factor.toString()} />
 {/each}
 =
 {canon.reduce((n, {factor}) => n/factor, value)}
-{#each canon as { factor }, i}
+{#each canon as { factor } }
 	&nbsp;· 
 	{factor - 1}
 {/each}

@@ -25,7 +25,14 @@
 		"paths": {
 			"$lib": ["src/lib"],
 			"$lib/*": ["src/lib/*"]
-		}
+		},
+        "inlineSources": false,
+        "strict": true,
+        "strictNullChecks": true,
+        "strictFunctionTypes": true,
+        "noImplicitAny": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true
 	},
 	"include": ["src/**/*.d.ts", "src/**/*.js", "src/**/*.ts", "src/**/*.svelte"]
 }
