@@ -13,6 +13,7 @@
         Playfair: "Шифр Playfair",
         RSA: "RSA",
         Graph: "Граф",
+        BDFS: "Пошуки",
     }
     let active: keyof (typeof links);
     // @ts-ignore
