@@ -228,7 +228,7 @@
 			}
 		}
 
-        if (!nextValue.match(/^(\s*\d+\s*[, ]?)*$/)) {
+        if (!nextValue.match(/^[\d\s,]*$/)) {
             ev.preventDefault();
         }
     }
@@ -242,14 +242,25 @@
         {/each}
     </div>
 
-    <Graph {vertices} {edges} />
+    <div>
+        <center>
+            Черга: 
+            {#each list as q, i}
+                {#if i},{/if}
+                {q}{:else}
+                пусто{/each}.
+        </center>
+        <Graph {vertices} {edges} />
+    </div>
 
     <div>
         Метод пошуку: 
+        <br>
         <label>
             <input type="radio" bind:group={method} value="bfs">
             в ширину
         </label>
+        <br>
         <label>
             <input type="radio" bind:group={method} value="dfs">
             в глибину
@@ -262,14 +273,7 @@
         <button on:click={search} disabled={searching}>
             Почати пошук
         </button>
-        
-        Черга: 
-        {#each list as q, i}
-            {#if i},{/if}
-            {q}{:else}
-            пусто{/each}.
         <br>
-        
         <button on:click={nextstep} disabled={autopause}>
             Наступний крок
         </button>
@@ -283,6 +287,7 @@
 <style>
     section {
         display: flex;
-        gap: 50px;
+        gap: 20px;
+        justify-content: space-between;
     }
 </style>
