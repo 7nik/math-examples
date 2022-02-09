@@ -94,10 +94,11 @@
         let visitedV:number[] = [start];
         let visitedE:Edge[] = [];
         list = [start];
+        markVertex(start, "orange");
         
         while (list.length > 0) {
             await sleep();
-            markVertex(list[0], "blue");
+            markVertex(list[0], "orange");
             
             for (let e of getEdges(list[0])) {
                 if (visitedE.includes(e)) continue;
@@ -112,7 +113,7 @@
                     markEdge(e.v1, e.v2, "lightpink");
                 } else {
                     markEdge(e.v1, e.v2, "green");
-                    markVertex(vi, "orange");
+                    markVertex(vi, "blue");
                     list = [...list, vi];
                     visitedV.push(vi);
                 }
@@ -132,8 +133,8 @@
         
         await sleep();
         while (list.length > 0) {
-            markVertex(list[1], "orange");
-            markVertex(list[0], "blue");
+            markVertex(list[1], "blue");
+            markVertex(list[0], "orange");
             
             let ee = getEdges(list[0]);
             ee = ee.filter(e => !visitedE.includes(e));
@@ -150,7 +151,7 @@
                     markEdge(e.v1, e.v2, "lightpink");
                 } else {
                     markEdge(e.v1, e.v2, "green");
-                    markVertex(vi, "orange");
+                    markVertex(vi, "blue");
                     list = [vi, ...list];
                     visitedV.push(vi);
                 }
@@ -243,14 +244,14 @@
     </div>
 
     <div>
+        <Graph {vertices} {edges} />
         <center>
-            Черга: 
+            {#if method == "bfs"}Черга{:else}Стек{/if}: 
             {#each list as q, i}
                 {#if i},{/if}
                 {q}{:else}
                 пусто{/each}.
         </center>
-        <Graph {vertices} {edges} />
     </div>
 
     <div>
