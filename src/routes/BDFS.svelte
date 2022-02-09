@@ -90,14 +90,12 @@
     }
 
     async function bfs () {
-        resetGraph();
+        await resetGraph();
         let visitedV:number[] = [start];
         let visitedE:Edge[] = [];
         list = [start];
-        markVertex(start, "orange");
         
         while (list.length > 0) {
-            await sleep();
             markVertex(list[0], "orange");
             
             for (let e of getEdges(list[0])) {
@@ -122,16 +120,16 @@
             await sleep();
             markVertex(list[0], "green");
             [, ...list] = list;
+            if (list.length > 0) await sleep();
         }
     }
 
     async function dfs () {
-        resetGraph();
+        await resetGraph();
         let visitedV:number[] = [start];
         let visitedE:Edge[] = [];
         list = [start];
         
-        await sleep();
         while (list.length > 0) {
             markVertex(list[1], "blue");
             markVertex(list[0], "orange");
