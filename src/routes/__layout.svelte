@@ -14,6 +14,7 @@
         RSA: "RSA",
         Graph: "Граф",
         BDFS: "Пошук у графі",
+        Kruskal: "Алгоритм Крускала",
     }
     let active: keyof (typeof links);
     // @ts-ignore

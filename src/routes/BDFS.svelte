@@ -1,6 +1,6 @@
 <script lang="ts">
     import Graph from "$lib/Graph.svelte";
-    import type { Vertex, Edge } from "$lib/Graph.svelte";
+    import { Edge, getEdgeIndex, getEdges, markEdge, markVertex, resetGraph, verticesExample } from "$lib/GraphUtils";
 
     let inputs = [
         "2,4,5,6",
@@ -15,30 +15,7 @@
         "11",
         ""
     ];
-
-    let vertices: Vertex[] = [{
-        i: 1, x: 100, y: 0,
-    }, {
-        i: 2, x: 200, y: 0,
-    }, {
-        i: 3, x: 300, y: 0,
-    }, {
-        i: 4, x: 0, y: 100,
-    }, {
-        i: 5, x: 100, y: 100,
-    }, {
-        i: 6, x: 200, y: 100,
-    }, {
-        i: 7, x: 300, y: 100,
-    }, {
-        i: 8, x: 400, y: 100,
-    }, {
-        i: 9, x: 100, y: 200,
-    }, {
-        i: 10, x: 200, y: 200,
-    }, {
-        i: 11, x: 300, y: 200,
-    }];
+    let [vertices] = resetGraph(verticesExample, []);
 
     $: edges = inputs
         .flatMap((s, i) => s.match(/\d+/g)?.map(n => ({
@@ -47,30 +24,7 @@
         })))
         .filter((x): x is Edge => !!x && x.v1>0 && x.v1<12 && x.v2>0 && x.v2<12)
         // remove duplicates
-        .filter(({v1,v2}, i, arr) => i == arr.findIndex(e => e.v1==v1 && e.v2==v2 || e.v1==v2 && e.v2==v1));
-
-    function resetGraph () {
-        vertices.forEach(v => v.color = "grey");
-        vertices = vertices;
-        edges.forEach(e => { e.color = "silver"; e.weight = 50; });
-        edges = edges;
-    }
-    function getEdges (v:number) {
-        return edges
-            .filter(({ v1, v2 }) => v1==v || v2==v)
-            .sort((e1, e2) => Math.min(e1.v1, e1.v2) - Math.min(e2.v1, e2.v2) || Math.max(e1.v1, e1.v2) - Math.max(e2.v1, e2.v2));
-    } 
-    function markEdge (v1:number, v2:number, color:string) {
-        let index = edges.findIndex(e => e.v1==v1 && e.v2==v2 || e.v1==v2 && e.v2==v1);
-        if (index < 0) return;
-        edges[index].color = color;
-        edges[index].weight = 100;
-    };
-    function markVertex (i:number, color:string) {
-        let index = vertices.findIndex(v => v.i == i);
-        if (index < 0) return;
-        vertices[index].color = color;
-    };
+        .filter(({v1,v2}, i, arr) => i == getEdgeIndex(v1, v2, arr));
 
     let start = 7;
     let list:number[] = [];
@@ -90,72 +44,72 @@
     }
 
     async function bfs () {
-        await resetGraph();
+        [vertices, edges] = resetGraph(vertices, edges, 50);
         let visitedV:number[] = [start];
         let visitedE:Edge[] = [];
-        list = [start];
+        list = await [start];
         
         while (list.length > 0) {
-            markVertex(list[0], "orange");
+            vertices = markVertex(list[0], "orange", vertices);
             
-            for (let e of getEdges(list[0])) {
-                if (visitedE.includes(e)) continue;
-                visitedE.push(e);
+            for (let edge of getEdges(list[0], edges)) {
+                if (visitedE.includes(edge)) continue;
+                visitedE.push(edge);
     
                 await sleep();
-                markEdge(e.v1, e.v2, "orange");
+                edges = markEdge(edge, "orange", edges);
     
                 await sleep();
-                let vi = e.v1 === list[0] ? e.v2 : e.v1;
+                let vi = edge.v1 === list[0] ? edge.v2 : edge.v1;
                 if (visitedV.includes(vi)) {
-                    markEdge(e.v1, e.v2, "lightpink");
+                    edges = markEdge(edge, "lightpink", edges);
                 } else {
-                    markEdge(e.v1, e.v2, "green");
-                    markVertex(vi, "blue");
+                    edges = markEdge(edge, "green", edges);
+                    vertices = markVertex(vi, "blue", vertices);
                     list = [...list, vi];
                     visitedV.push(vi);
                 }
             }
 
             await sleep();
-            markVertex(list[0], "green");
+            vertices = markVertex(list[0], "green", vertices);
             [, ...list] = list;
             if (list.length > 0) await sleep();
         }
     }
 
     async function dfs () {
-        await resetGraph();
+        [vertices, edges] = resetGraph(vertices, edges, 50);
         let visitedV:number[] = [start];
         let visitedE:Edge[] = [];
-        list = [start];
+        list = await [start];
         
         while (list.length > 0) {
-            markVertex(list[1], "blue");
-            markVertex(list[0], "orange");
+            vertices = markVertex(list[1], "blue", vertices);
+            vertices = markVertex(list[0], "orange", vertices);
             
-            let ee = getEdges(list[0]);
+            let ee = getEdges(list[0], edges);
             ee = ee.filter(e => !visitedE.includes(e));
             if (ee.length > 0) {
-                let e = ee[0];
-                visitedE.push(e);
+                let edge = ee[0];
+                visitedE.push(edge);
     
                 await sleep();
-                markEdge(e.v1, e.v2, "orange");
+                edges = markEdge(edge, "orange", edges);
     
                 await sleep();
-                let vi = e.v1 === list[0] ? e.v2 : e.v1;
+                let vi = edge.v1 === list[0] ? edge.v2 : edge.v1;
                 if (visitedV.includes(vi)) {
-                    markEdge(e.v1, e.v2, "lightpink");
+                    edges = markEdge(edge, "lightpink", edges);
                 } else {
-                    markEdge(e.v1, e.v2, "green");
-                    markVertex(vi, "blue");
+                    edges = markEdge(edge, "green", edges);
+                    vertices = markVertex(vi, "blue", vertices);
                     list = [vi, ...list];
                     visitedV.push(vi);
                 }
             } else {
                 await sleep();
-                markVertex(list[0], "green");
+                vertices = markVertex(list[0], "green", vertices);
                 [, ...list] = list;
             }
         }
