@@ -9,13 +9,12 @@
     let v1 = 1, v2 = 2, weight = 10;
     function addEdge() {
         if (v1 > 0 && v1 <= vertexNumber && v2 > 0 && v2 <= vertexNumber && weight) {
-            if (getEdgeIndex(v1, v2, edges) < 0) {
-                edges = [...edges, { v1, v2, weight }];
+            const index = getEdgeIndex(v1, v2, edges);
+            if (index >= 0) {
+                edges.splice(index, 1);
             }
+            edges = [...edges, { v1, v2, weight }];
         }
-        v1 = 1;
-        v2 = 2;
-        weight = 10;
     }
     function removeEdge(edge: Edge) {
         if (locked) return;
