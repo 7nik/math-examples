@@ -2,6 +2,7 @@ type Vertex = {
     i: number,
     x: number,
     y: number,
+    weight?: number,
     color?: string,
 };
 type Edge = {
@@ -137,7 +138,10 @@ export function sortEdges (edges: Edge[], ascending = true): Edge[] {
 }
 
 export function resetGraph (vertices: Vertex[], edges: Edge[], weight?: number): [Vertex[], Edge[]] {
-    vertices.forEach(v => v.color = "grey");
+    vertices.forEach(v => {
+        v.color = "grey";
+        delete v.weight;
+    });
     edges.forEach(e => { 
         e.color = "silver";
         if (weight) e.weight = weight;

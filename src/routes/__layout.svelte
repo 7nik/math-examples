@@ -16,6 +16,7 @@
         BDFS: "Пошук у графі",
         Kruskal: "Алгоритм Крускала",
         Prim: "Алгоритм Пріма",
+        Dijkstra: "Алгоритм Дейкстри",
     }
     let active: keyof (typeof links);
     // @ts-ignore

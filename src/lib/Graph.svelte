@@ -157,6 +157,29 @@
 			alignment-baseline="central"
 			fill="white"
 		>{vertex.i}</text>
+        {#if vertex.weight != null}
+            <text 
+                transition:fade={{ duration }}
+                x={vertex.x + 10}
+                y={vertex.y - 10}
+                font-size="11" 
+                font-weight="bold"
+                text-anchor="middle" 
+                alignment-baseline="central"
+                stroke="{vertex.color ?? "grey"}"
+                stroke-width="3"
+            >{vertex.weight}</text>
+            <text 
+                transition:fade={{ duration }}
+                x={vertex.x + 10}
+                y={vertex.y - 10}
+                font-size="11" 
+                font-weight="bold"
+                text-anchor="middle" 
+                alignment-baseline="central"
+                fill="white"
+            >{vertex.weight}</text>
+        {/if}
 	{/each}
 </svg>
 
