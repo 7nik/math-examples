@@ -1,12 +1,13 @@
 <script lang="ts">
-    import { slide } from "svelte/transition";
+    import { fade } from "svelte/transition";
     import { flip } from "svelte/animate";
     import Graph from "$lib/Graph.svelte";
     import EdgeText from "$lib/EdgeText.svelte";
-    import { Edge, verticesExample, edgesExample, resetGraph, markEdge, findLoop, getEdgeIndex, sortEdges } from "$lib/GraphUtils";
+    import { Edge, verticesExample, edgesExample, resetGraph, markEdge, findLoop, getEdgeIndex, getEdges, sortEdges, markVertex } from "$lib/GraphUtils";
 
     let [vertices, edges] = resetGraph(verticesExample, edgesExample);
 
+    let start = 7;
     let sortedEdges:Edge[] = [];
     let method:"max"|"min" = "min";
     let searching = false;
@@ -23,15 +24,20 @@
         });
     }
 
-    async function kruskal () {
+    async function prim () {
         [vertices, edges] = await resetGraph(vertices, edges);
-        sortedEdges = sortEdges(edges, method === "min");
+        sortedEdges = sortEdges(getEdges(start, edges), method === "min");
+        sortedEdges.forEach(e => markEdge(e, "lightblue", edges));
 
         let count = 0;
+        const visitedV: number[] = [start];
+        const visitedE: Edge[] = [];
         const tree: Edge[] = [];
 
+        vertices = markVertex(start, "green", vertices);
+
         while (sortedEdges.length > 0 && count < vertices.length - 1) {
-            if (count) await sleep();
+            await sleep();
 
             const edge = sortedEdges[0];
             edges = markEdge(edge, "orange", edges);
@@ -46,18 +52,32 @@
                 loop.forEach((e) => markEdge(e, "green", edges));
                 edges = markEdge(edge, "lightpink", edges);
                 tree.pop();
+                [, ...sortedEdges] = sortedEdges;
             } else {
                 edges = markEdge(edge, "green", edges);
+                visitedE.push(edge);
+                [, ...sortedEdges] = sortedEdges;
+                await sleep();
+                let vi = visitedV.includes(edge.v1) ? edge.v2 : edge.v1;
+                visitedV.push(vi);
+                vertices = markVertex(vi, "green", vertices);
+                sortedEdges = sortEdges(
+                    sortedEdges.concat(getEdges(vi, edges).filter(e => 
+                            !visitedE.includes(e) 
+                            && !sortedEdges.includes(e))), 
+                    method === "min",
+                );
+                sortedEdges.forEach(e => markEdge(e, "lightblue", edges));
+                edges = edges;
                 count += 1;
             }
-            [, ...sortedEdges] = sortedEdges;
         }
         sortedEdges = [];
     }
 
     async function search () {
         searching = true;
-        await kruskal();
+        await prim();
         searching = false;
     }
 
@@ -105,7 +125,7 @@
         <center>
             Відсортовані ребра:
             {#each sortedEdges as edge (edge)}
-                <div out:slide animate:flip>
+                <div out:fade={{duration:100}} in:fade={{delay:200}} animate:flip>
                     <EdgeText {edge} />
                 </div>
             {:else}
@@ -127,7 +147,10 @@
             максимальне дерево
         </label>
         <br>
-        
+
+        Початок пошуку: 
+        <input type="number" min="1" max="11" bind:value={start} >
+        <br>
         <button on:click={search} disabled={searching}>
             Почати пошук
         </button>
@@ -147,6 +170,9 @@
         display: flex;
         gap: 20px;
         justify-content: space-between;
+    }
+    center {
+        position: relative;
     }
     .edges-box {
         display: flex;

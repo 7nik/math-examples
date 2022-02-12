@@ -127,6 +127,14 @@ export function findLoop (list: Edge[]): Edge[] | null {
     }
     return null;
 }
+export function sortEdges (edges: Edge[], ascending = true): Edge[] {
+    return edges.slice().sort((e1, e2) => {
+        const diff = ascending
+            ? (e1.weight || 0) - (e2.weight || 0)
+            : (e2.weight || 0) - (e1.weight || 0);
+        return diff || Math.min(e1.v1, e1.v2) - Math.min(e2.v1, e2.v2);
+    });
+}
 
 export function resetGraph (vertices: Vertex[], edges: Edge[], weight?: number): [Vertex[], Edge[]] {
     vertices.forEach(v => v.color = "grey");

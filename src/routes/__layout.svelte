@@ -15,6 +15,7 @@
         Graph: "Граф",
         BDFS: "Пошук у графі",
         Kruskal: "Алгоритм Крускала",
+        Prim: "Алгоритм Пріма",
     }
     let active: keyof (typeof links);
     // @ts-ignore
