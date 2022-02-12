@@ -3,9 +3,10 @@
     import { flip } from "svelte/animate";
     import Graph from "$lib/Graph.svelte";
     import EdgeText from "$lib/EdgeText.svelte";
-    import { Edge, verticesExample, edgesExample, resetGraph, markEdge, findLoop, getEdgeIndex, sortEdges } from "$lib/GraphUtils";
+    import EdgeLister from "$lib/EdgeLister.svelte";
+    import { Edge, resetGraph, markEdge, findLoop, sortEdges, getExamples } from "$lib/GraphUtils";
 
-    let [vertices, edges] = resetGraph(verticesExample, edgesExample);
+    let { vertices, edges } = getExamples();
 
     let sortedEdges:Edge[] = [];
     let method:"max"|"min" = "min";
@@ -60,46 +61,10 @@
         await kruskal();
         searching = false;
     }
-
-    let v1 = 1, v2 = 2, weight = 10;
-    function addEdge() {
-        if (v1 > 0 && v1 < 12 && v2 > 0 && v2 < 12 && weight) {
-            if (getEdgeIndex(v1, v2, edges) < 0) {
-                edges = [...edges, { v1, v2, weight }];
-            }
-        }
-        v1 = 1;
-        v2 = 2;
-        weight = 10;
-    }
-    function removeEdge(edge: Edge) {
-        if (searching) return;
-        edges = edges.filter(e => e !== edge);
-    }
 </script>
 
 <section>
-    <div class="edges-box">
-        <div>
-            Ребра:<br>
-            {#each edges as edge}
-                <div class:removable={!searching} on:click={() => removeEdge(edge)}>
-                    <EdgeText {edge}/>
-                </div>
-            {/each}
-        </div>
-        <div>
-            Вершини:
-            <input type="number" min="1" max="11" bind:value={v1} />
-            <input type="number" min="1" max="11" bind:value={v2} />
-            <br>
-            Вага:
-            <input type="number" min="1" max="11" bind:value={weight} />
-            <br>
-            <button on:click={addEdge} disabled={searching}>Додати ребро</button>
-        </div>
-    </div>
-
+    <EdgeLister bind:edges locked={searching} />
     <div>
         <Graph {vertices} {edges} />
         <center>
@@ -147,16 +112,5 @@
         display: flex;
         gap: 20px;
         justify-content: space-between;
-    }
-    .edges-box {
-        display: flex;
-        gap: 10px;
-    }
-    .removable {
-        cursor: no-drop;
-        transition: background .3s
-    }
-    .removable:hover {
-        background: #eee;
     }
 </style>

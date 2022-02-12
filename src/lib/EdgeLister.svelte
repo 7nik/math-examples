@@ -1,0 +1,59 @@
+<script lang="ts">
+    import EdgeText from "./EdgeText.svelte";
+    import { Edge, getEdgeIndex } from "./GraphUtils";
+
+    export let edges:Edge[] = [];
+    export let vertexNumber = 11;
+    export let locked = false;
+    
+    let v1 = 1, v2 = 2, weight = 10;
+    function addEdge() {
+        if (v1 > 0 && v1 <= vertexNumber && v2 > 0 && v2 <= vertexNumber && weight) {
+            if (getEdgeIndex(v1, v2, edges) < 0) {
+                edges = [...edges, { v1, v2, weight }];
+            }
+        }
+        v1 = 1;
+        v2 = 2;
+        weight = 10;
+    }
+    function removeEdge(edge: Edge) {
+        if (locked) return;
+        edges = edges.filter(e => e !== edge);
+    }
+</script>
+
+<div class="edges-box">
+    <div>
+        Ребра:<br>
+        {#each edges as edge}
+            <div class:removable={!locked} on:click={() => removeEdge(edge)}>
+                <EdgeText {edge}/>
+            </div>
+        {/each}
+    </div>
+    <div>
+        Вершини:
+        <input type="number" min="1" max={vertexNumber} bind:value={v1} />
+        <input type="number" min="1" max={vertexNumber} bind:value={v2} />
+        <br>
+        Вага:
+        <input type="number" min="1" max={vertexNumber} bind:value={weight} />
+        <br>
+        <button on:click={addEdge} disabled={locked}>Додати ребро</button>
+    </div>
+</div>
+
+<style>
+    .edges-box {
+        display: flex;
+        gap: 10px;
+    }
+    .removable {
+        cursor: no-drop;
+        transition: background .3s
+    }
+    .removable:hover {
+        background: #eee;
+    }
+</style>

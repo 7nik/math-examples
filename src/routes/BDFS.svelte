@@ -1,6 +1,6 @@
 <script lang="ts">
     import Graph from "$lib/Graph.svelte";
-    import { Edge, getEdgeIndex, getEdges, markEdge, markVertex, resetGraph, verticesExample } from "$lib/GraphUtils";
+    import { Edge, getEdgeIndex, getEdges, getExamples, markEdge, markVertex, resetGraph } from "$lib/GraphUtils";
 
     let inputs = [
         "2,4,5,6",
@@ -15,7 +15,7 @@
         "11",
         ""
     ];
-    let [vertices] = resetGraph(verticesExample, []);
+    let { vertices } = getExamples();
 
     $: edges = inputs
         .flatMap((s, i) => s.match(/\d+/g)?.map(n => ({

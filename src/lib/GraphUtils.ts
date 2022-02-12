@@ -13,7 +13,7 @@ type Edge = {
 };
 export type { Vertex, Edge };
 
-export const verticesExample: Vertex[] = [{
+const verticesExample: Vertex[] = [{
     i: 1, x: 100, y: 0,
 }, {
     i: 2, x: 200, y: 0,
@@ -37,7 +37,7 @@ export const verticesExample: Vertex[] = [{
     i: 11, x: 300, y: 200,
 }];
 
-export const edgesExample: Edge[] = [{
+const edgesExample: Edge[] = [{
     v1: 1, v2: 2, weight: 9
 }, {
     v1: 1, v2: 4, weight: 10
@@ -78,6 +78,13 @@ export const edgesExample: Edge[] = [{
 }, {
     v1: 8, v2: 11, weight: 4
 }]; 
+
+export function getExamples (): { vertices:Vertex[], edges:Edge[] } {
+    return {
+        vertices: verticesExample.map(v => ({...v})),
+        edges: edgesExample.map(e => ({...e})),
+    }
+}
 
 export function getEdgeIndex (v1: number, v2: number, edges: Edge[]): number {
     return edges.findIndex(e => e.v1==v1 && e.v2==v2 || e.v1==v2 && e.v2==v1);

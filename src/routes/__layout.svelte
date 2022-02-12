@@ -2,6 +2,7 @@
     import { base } from '$app/paths';
     import { page } from '$app/stores';
     import { fly, fade } from "svelte/transition";
+    import { beforeNavigate, afterNavigate } from "$app/navigation";
 
     const links = {
         RealFunc: "Числові функції",
@@ -20,9 +21,13 @@
     }
     let active: keyof (typeof links);
     // @ts-ignore
-    $: active = Object.keys(links).find(link => $page.path.endsWith(link));
+    $: active = Object.keys(links).find(link => $page.url.pathname.endsWith(link));
     $: title = `Дискретна математика • ${links[active] ?? "Головна"}`;
-    let showMenu = $page.path.endsWith("/");
+    let showMenu = $page.url.pathname.endsWith("/");
+
+    let hide = false;
+    beforeNavigate(() => hide = true);
+    afterNavigate(() => setTimeout(() => hide = false, 200));
 </script>
 
 <svelte:head>
@@ -45,11 +50,9 @@
         {/each}
     </ul>
 {/if}
-{#key active}
-    <main in:fade>
-        <slot/>
-    </main>
-{/key}
+<main class:hide in:fade>
+    <slot/>
+</main>
 
 <style>
     :global(body) {
@@ -115,9 +118,13 @@
         flex-grow: 1;
         padding: 20px;
         overflow: auto;
+        transition: opacity .2s;
     }
     :global(input) {
         font-size: 90%;
         margin-bottom: 5px;
+    }
+    .hide {
+        opacity: 0;
     }
 </style>
