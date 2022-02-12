@@ -3,6 +3,8 @@
 	export const ssr = false;
 </script>
 <script lang="ts">
+import { browser } from "$app/env";
+
     import { fade } from "svelte/transition";
     import type { Vertex, Edge } from "./GraphUtils";
 
@@ -30,24 +32,36 @@
 
     $: Xmax = vertices.reduce((m,v) => m.x > v.x ? m : v).x;
     $: Ymax = vertices.reduce((m,v) => m.y > v.y ? m : v).y;
+    $: Xmin = vertices.reduce((m,v) => m.x < v.x ? m : v).x;
+    $: Ymin = vertices.reduce((m,v) => m.y < v.y ? m : v).y;
     $: Wmax = edges.reduce((m,e) => Math.max(m, e.weight || 0), 0) || 50;
-    $: w = Xmax > Ymax ? 800 : 800/Ymax*Xmax;
-    $: h = Ymax > Xmax ? 800 : 800/Xmax*Ymax;
-    $: scale = 800 / (Math.max(Ymax,Xmax) + 140)
+    $: Xrange = Xmax - Xmin;
+    $: Yrange = Ymax - Ymin;
+    $: w = Xrange > Yrange ? 800 : 800/Yrange*Xrange;
+    $: h = Yrange > Xrange ? 800 : 800/Xrange*Yrange;
+
+    let svg:SVGSVGElement;
+    let point:DOMPoint;
+    if (browser) point = new DOMPoint();
 
     const duration = 300;
 
     function grabable (node:Element, v: Vertex) {
 		function drag(ev: MouseEvent) {
-			v.x += ev.movementX/scale;
-			v.y += ev.movementY/scale;
+            point.x = ev.clientX;
+            point.y = ev.clientY;
+            point = point.matrixTransform(svg.getScreenCTM()?.inverse());
+			v.x = point.x;
+			v.y = point.y;
             vertices = vertices;
 		}
 		function endDragging() {
 			node.closest("svg")?.removeEventListener("mouseup", endDragging);
 			node.closest("svg")?.removeEventListener("mousemove", drag);
 		}
-		function startDragging() {
+		function startDragging(ev: Event) {
+            if ((ev as MouseEvent).button !== 0) return;
+            ev.preventDefault();
 			node.closest("svg")?.addEventListener("mouseup", endDragging);
 			node.closest("svg")?.addEventListener("mousemove", drag);
 		}
@@ -63,9 +77,10 @@
 
 </script>
 
-<svg width={w} height={h} viewBox="-40 -40 {Xmax + 100} {Ymax + 100}"
+<svg width={w} height={h} viewBox="{Xmin-20} {Ymin-30} {Xrange+50} {Yrange+50}"
      xmlns="http://www.w3.org/2000/svg"
      font-size="0"
+     bind:this={svg}
 >
 	<!-- lines -->
 	{#each edges as edge (`${edge.v1} ${edge.v2}`)}
