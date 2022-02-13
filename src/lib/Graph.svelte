@@ -101,7 +101,7 @@
                 v2: v.i,
             };
             if (editable.addEdge === "weighted") {
-                newEdge.weight = Wmax / 2 ?? 50;
+                newEdge.weight = Wmax/2|0 || 50;
             }
             grabbing = true;
 			svg.addEventListener("mouseup", endDragging);
@@ -134,7 +134,11 @@
             grabbing = false;
 		}
 		function startDragging(ev: Event) {
-            if ((ev as MouseEvent).button !== 0 || !(ev as MouseEvent).ctrlKey) return;
+            if ((ev as MouseEvent).button !== 0 
+                || editable.addEdge && !(ev as MouseEvent).ctrlKey
+            ) {
+                return;
+            }
             if (!editable.moveVertex) return;
             ev.preventDefault();
             grabbing = true;

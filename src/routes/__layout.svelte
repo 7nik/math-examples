@@ -1,29 +1,35 @@
 <script lang="ts">
     import { base } from '$app/paths';
     import { page } from '$app/stores';
-    import { fly } from "svelte/transition";
     import { beforeNavigate, afterNavigate } from "$app/navigation";
+    import { onMount } from 'svelte';
 
-    const links = {
-        RealFunc: "Числові функції",
-        NumSys: "Системи числення",
-        NumSysExam: "Системи числення КР",
-        Cong: "Конгруенції",
-        Caesar: "Криптоаналіз шифру Цезаря",
-        Crypto: "Класичні алгоритми шифрування",
-        Playfair: "Шифр Playfair",
-        RSA: "RSA",
-        Graph: "Граф",
-        BDFS: "Пошук у графі",
-        Kruskal: "Алгоритм Крускала",
-        Prim: "Алгоритм Пріма",
-        Dijkstra: "Алгоритм Дейкстри",
-    }
+    let links = {};
+    // wordaround for https://github.com/sveltejs/kit/issues/2962
+    // basically: avoid adding links to generated static pages :(
+    onMount(() => {
+        links = {
+            RealFunc: "Числові функції",
+            NumSys: "Системи числення",
+            NumSysExam: "Системи числення КР",
+            Cong: "Конгруенції",
+            Caesar: "Криптоаналіз шифру Цезаря",
+            Crypto: "Класичні алгоритми шифрування",
+            Playfair: "Шифр Playfair",
+            RSA: "RSA",
+            Graph: "Граф",
+            BDFS: "Пошук у графі",
+            Kruskal: "Алгоритм Крускала",
+            Prim: "Алгоритм Пріма",
+            Dijkstra: "Алгоритм Дейкстри",
+        };
+    });
     let active: keyof (typeof links);
     // @ts-ignore
     $: active = Object.keys(links).find(link => $page.url.pathname.endsWith(link));
     $: title = `Дискретна математика • ${links[active] ?? "Головна"}`;
-    let showMenu = false;
+    $: isIndexPage = $page.url.pathname === (base || "/");
+    $: showMenu = isIndexPage;
 
     let hide = false;
     beforeNavigate(() => hide = true);
@@ -35,21 +41,19 @@
 </svelte:head>
 
 <header>
-    <span class="menu" on:click={() => showMenu = !showMenu}>☰</span> 
+    <span class="menu" on:click={() => showMenu = !showMenu || isIndexPage}>☰</span> 
     <span>{title}</span>
 </header>
-{#if showMenu || $page.url.pathname.length <= base.length+1}
-    <ul transition:fly={{ x:-350, duration:500, opacity:1 }} on:click={() => showMenu=false}>
-        <h2>Сторінки</h2>
-        {#each Object.entries(links) as [link, name]}
-            <li>
-                <a href="{base}/{link}" class:active={link === active} >
-                    {name}
-                </a>
-            </li>
-        {/each}
-    </ul>
-{/if}
+<ul on:click={() => showMenu = isIndexPage} class:showMenu={showMenu}>
+    <h2>Сторінки</h2>
+    {#each Object.entries(links) as [link, name]}
+        <li>
+            <a href="{base}/{link}" class:active={link === active} >
+                {name}
+            </a>
+        </li>
+    {/each}
+</ul>
 <main class:hide>
     <slot/>
 </main>
@@ -89,11 +93,16 @@
         padding: 1em;
         margin: 0;
         top: 60px;
+        left: -350px;
         border-right: 1px #8884 solid;
         box-shadow: 2px 0 30px #8884;
         overflow: auto;
         background: white;
         z-index: 1;
+        transition: left 0.5s;
+    }
+    ul.showMenu {
+        left: 0px;
     }
     li::marker {
         content: none;
