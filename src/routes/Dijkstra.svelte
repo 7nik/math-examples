@@ -7,7 +7,10 @@
 
     let { vertices, edges } = getExamples();
 
+    $: weighted = vertices.every(v => "weight" in v);
+
     let start = 8;
+    let end = 4;
     let queue:Vertex[] = [];
     let searching = false;
     let autopause = true;
@@ -39,7 +42,6 @@
 
             for (const edge of ee) {
                 edges = markEdge(edge, "orange", edges);
-                // await sleep();
                 
                 const vi = edge.v1 === queue[0].i ? edge.v2 : edge.v1;
                 vertices = markVertex(vi, "blue" ,vertices);
@@ -62,11 +64,51 @@
             }
 
             vertices = markVertex(queue[0].i, "green", vertices);
-            // queue.shift();
             [, ...queue] = queue;
             queue.sort((v1, v2) => (v1.weight??0) - (v2.weight??0));
             await sleep();
         }
+    }
+
+    async function buildPath () {
+        if (!vertices[end-1].weight) return;
+        searching = true;
+        vertices.forEach(v => v.color = "grey");
+        vertices = markVertex(end, "green", vertices);
+        edges.forEach(e => e.color = "silver");
+        edges = edges;
+        
+        let currentV = vertices[end-1];
+        let path: Edge[] = [];
+
+        do {
+            let ee = getEdges(currentV.i, edges).filter(e => !path.includes(e));
+            ee.forEach(e => markEdge(e, "skyblue", edges));
+            edges = edges;
+            let vv = ee.map(e => vertices[e.v1 === currentV.i ? e.v2-1 : e.v1-1]);
+            vv.forEach(v => markVertex(v.i, "skyblue", vertices));
+            vertices = vertices;
+            await sleep();
+
+            let nextV = vv[0], nextE:Edge = ee[0];
+            for (let i = 0; i < vv.length; i++) {
+                if (currentV.weight == vv[i].weight! + ee[i].weight!) {
+                    nextV = vv[i];
+                    nextE = ee[i];
+                    break;
+                }
+            }
+            currentV = nextV;
+            path.push(nextE);
+
+            ee.forEach(e => markEdge(e, "silver", edges));
+            edges = markEdge(nextE, "green", edges);
+            vv.forEach(v => markVertex(v.i, "grey", vertices));
+            vertices = markVertex(nextV.i, "green", vertices);
+            if (currentV.weight !== 0) await sleep();
+
+        } while (currentV.weight !== 0);
+        searching = false;
     }
 
     async function search () {
@@ -99,13 +141,20 @@
     </div>
 
     <div>
-        Початок пошуку: 
-        <input type="number" min="1" max="11" bind:value={start} >
+        Початок розрахунку: 
+        <input type="number" min="1" max={vertices.length} bind:value={start} >
         <br>
         <button on:click={search} disabled={searching}>
-            Почати пошук
+            Розрахувати відстані
         </button>
+        <br><br>
+        Знайти шлях з: 
+        <input type="number" min="1" max={vertices.length} bind:value={end} disabled={!weighted} >
         <br>
+        <button on:click={buildPath} disabled={!weighted || searching}>
+            Знайти шлях
+        </button>
+        <br><br>
         <button on:click={nextstep} disabled={autopause}>
             Наступний крок
         </button>
