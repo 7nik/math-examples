@@ -1,7 +1,3 @@
-<script context="module">
-	// as graph is generated randomly
-	export const ssr = false;
-</script>
 <script lang="ts">
 	import { fade } from "svelte/transition";
 	import { linear } from "svelte/easing";
