@@ -10,6 +10,7 @@
 
     let start = 7;
     let sortedEdges:Edge[] = [];
+    let tree:Edge[] = [];
     let method:"max"|"min" = "min";
     let searching = false;
     let autopause = true;
@@ -29,11 +30,11 @@
         [vertices, edges] = await resetGraph(vertices, edges);
         sortedEdges = sortEdges(getEdges(start, edges), method === "min");
         sortedEdges.forEach(e => markEdge(e, "lightblue", edges));
+        tree = [];
 
         let count = 0;
         const visitedV: number[] = [start];
         const visitedE: Edge[] = [];
-        const tree: Edge[] = [];
 
         vertices = markVertex(start, "green", vertices);
 
@@ -56,6 +57,7 @@
                 [, ...sortedEdges] = sortedEdges;
             } else {
                 edges = markEdge(edge, "green", edges);
+                tree = tree;
                 visitedE.push(edge);
                 [, ...sortedEdges] = sortedEdges;
                 await sleep();
@@ -94,6 +96,8 @@
             reweightEdge: true,
         } }/>
         <center>
+            Вага дерева: {tree.reduce((w,e) => w + (e.weight ?? 0), 0)}
+            <br>
             Відсортовані ребра:
             {#each sortedEdges as edge (edge)}
                 <div out:fade={{duration:100}} in:fade={{delay:200}} animate:flip>

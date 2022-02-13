@@ -9,6 +9,7 @@
     let { vertices, edges } = getExamples();
 
     let sortedEdges:Edge[] = [];
+    let tree: Edge[] = [];
     let method:"max"|"min" = "min";
     let searching = false;
     let autopause = true;
@@ -27,10 +28,9 @@
     async function kruskal () {
         [vertices, edges] = await resetGraph(vertices, edges);
         sortedEdges = sortEdges(edges, method === "min");
+        tree = [];
 
         let count = 0;
-        const tree: Edge[] = [];
-
         while (sortedEdges.length > 0 && count < vertices.length - 1) {
             if (count) await sleep();
 
@@ -50,6 +50,7 @@
             } else {
                 edges = markEdge(edge, "green", edges);
                 count += 1;
+                tree = tree;
             }
             [, ...sortedEdges] = sortedEdges;
         }
@@ -74,6 +75,8 @@
             reweightEdge: true,
         } }/>
         <center>
+            Вага дерева: {tree.reduce((w,e) => w + (e.weight ?? 0), 0)}
+            <br>
             Відсортовані ребра:
             {#each sortedEdges as edge (edge)}
                 <div out:slide animate:flip>
