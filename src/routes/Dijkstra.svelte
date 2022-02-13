@@ -77,9 +77,15 @@
 </script>
 
 <section>
-    <EdgeLister bind:edges locked={searching} />
+    <EdgeLister bind:edges locked={searching} vertexNumber={vertices.length} />
     <div>
-        <Graph {vertices} {edges} />
+        <Graph bind:vertices bind:edges editable={searching ? {} : {
+            addVertex: true,
+            moveVertex: true,
+            addEdge: "weighted",
+            removeEdge: true,
+            reweightEdge: true,
+        } }/>
         <center>
             Вершини для обходу:
             {#each queue as v (v)}

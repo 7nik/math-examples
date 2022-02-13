@@ -196,7 +196,9 @@
     </div>
 
     <div>
-        <Graph {vertices} {edges} />
+        <Graph {vertices} {edges} editable={searching ? {} : {
+            moveVertex: true,
+        } }/>
         <center>
             {#if method == "bfs"}Черга{:else}Стек{/if}: 
             {#each list as q, i}

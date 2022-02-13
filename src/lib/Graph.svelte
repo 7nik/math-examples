@@ -1,15 +1,17 @@
-<script context="module" lang="ts">
-	// as graph is generated randomly
-	export const ssr = false;
-</script>
 <script lang="ts">
-import { browser } from "$app/env";
-
+    import { browser } from "$app/env";
     import { fade } from "svelte/transition";
-    import type { Vertex, Edge } from "./GraphUtils";
+    import { Vertex, Edge, getEdgeIndex } from "./GraphUtils";
 
     export let vertices: Vertex[];
     export let edges: Edge[];
+    export let editable: {
+        addVertex?: boolean,
+        moveVertex?: boolean,
+        addEdge?: "weighted"|"unweighted",
+        removeEdge?: boolean,
+        reweightEdge?: boolean,
+    } = {};
 
     let vcoord: Record<number, [number, number]>;
     $: {
@@ -44,46 +46,154 @@ import { browser } from "$app/env";
     let point:DOMPoint;
     if (browser) point = new DOMPoint();
 
-    const duration = 300;
+    const duration = 200;
+    let grabbing = false;
+    let ctrlKey = false;
 
-    function grabable (node:Element, v: Vertex) {
+    function removeEdge(edge: Edge) {
+        if (!editable.removeEdge) return;
+        edges = edges.filter(e => e !== edge);
+    }
+
+    function addVertex(ev: MouseEvent) {
+        if (!editable.addVertex) return;
+        if (!ev.ctrlKey) return;
+        point.x = ev.clientX;
+        point.y = ev.clientY;
+        point = point.matrixTransform(svg.getScreenCTM()?.inverse());
+        const i = Math.max(...Object.keys(vcoord).map(Number)) + 1;
+        vertices = [...vertices, { i, x: point.x, y: point.y }];
+    }
+
+    let newEdge:Edge&{x:number,y:number}|null;
+    function addEdge (node:Element, v: Vertex) {
 		function drag(ev: MouseEvent) {
             point.x = ev.clientX;
             point.y = ev.clientY;
             point = point.matrixTransform(svg.getScreenCTM()?.inverse());
-			v.x = point.x;
-			v.y = point.y;
-            vertices = vertices;
+            if (newEdge) {
+                newEdge.x = point.x;
+                newEdge.y = point.y;
+            }
 		}
-		function endDragging() {
-			node.closest("svg")?.removeEventListener("mouseup", endDragging);
-			node.closest("svg")?.removeEventListener("mousemove", drag);
+		function endDragging(ev?: Event) {
+			svg.removeEventListener("mouseup", endDragging);
+			svg.removeEventListener("mousemove", drag);
+            grabbing = false;
+            if (newEdge && ev?.target instanceof SVGCircleElement) {
+                newEdge.v2 = v.i;
+                const index = getEdgeIndex(newEdge.v1, newEdge.v2, edges);
+                if (index >= 0) {
+                    edges.splice(index, 1);
+                }
+                edges = [...edges, newEdge];
+            }
+            newEdge = null;
 		}
 		function startDragging(ev: Event) {
-            if ((ev as MouseEvent).button !== 0) return;
+            if ((ev as MouseEvent).button !== 0 || (ev as MouseEvent).ctrlKey) return;
+            if (!editable.addEdge) return;
             ev.preventDefault();
-			node.closest("svg")?.addEventListener("mouseup", endDragging);
-			node.closest("svg")?.addEventListener("mousemove", drag);
+            newEdge = {
+                x: v.x,
+                y: v.y,
+                v1: v.i,
+                v2: v.i,
+            };
+            if (editable.addEdge === "weighted") {
+                newEdge.weight = Wmax / 2 ?? 50;
+            }
+            grabbing = true;
+			svg.addEventListener("mouseup", endDragging);
+			svg.addEventListener("mousemove", drag);
 		}
 
+		node.addEventListener("mouseup", endDragging);
 		node.addEventListener("mousedown", startDragging);
         return {
             destroy () {
+		        node.removeEventListener("mouseup", endDragging);
 		        node.removeEventListener("mousedown", startDragging);
                 endDragging();
             }
         }
     }
 
+    function moveVertex (node:Element, v: Vertex) {
+		function drag(ev: MouseEvent) {
+            point.x = ev.clientX;
+            point.y = ev.clientY;
+            point = point.matrixTransform(svg.getScreenCTM()?.inverse());
+            v.x = point.x;
+            v.y = point.y;
+            vertices = vertices;
+		}
+		function endDragging() {
+			svg.removeEventListener("mouseup", endDragging);
+			svg.removeEventListener("mousemove", drag);
+            grabbing = false;
+		}
+		function startDragging(ev: Event) {
+            if ((ev as MouseEvent).button !== 0 || !(ev as MouseEvent).ctrlKey) return;
+            if (!editable.moveVertex) return;
+            ev.preventDefault();
+            grabbing = true;
+			svg.addEventListener("mouseup", endDragging);
+			svg.addEventListener("mousemove", drag);
+		}
+
+		node.addEventListener("mouseup", endDragging);
+		node.addEventListener("mousedown", startDragging);
+        return {
+            destroy () {
+		        node.removeEventListener("mouseup", endDragging);
+		        node.removeEventListener("mousedown", startDragging);
+                endDragging();
+            }
+        }
+    }
+
+    function reweightEdge (node:Element, edge: Edge) {
+		let x:number, w:number;
+		function resize (ev: Event) {
+			edge.weight = Math.max(0, Math.min(100, w + ((ev as MouseEvent).clientX-x)/4)|0);
+            edges = edges;
+        }
+		function start (ev: Event) {
+            if (!editable.reweightEdge) return;
+            ev.preventDefault();
+			w = edge.weight || 0;
+			x = (ev as MouseEvent).clientX;
+			window.addEventListener("mousemove", resize);
+			window.addEventListener("mouseup", () => {
+				window.removeEventListener("mousemove", resize);
+			});
+		}
+		node.addEventListener("mousedown", start);
+		return {
+			destroy() {
+				node.removeEventListener("mousedown", start);
+				window.removeEventListener("mousemove", resize);
+			}
+		}
+	}
+
 </script>
 
+<svelte:window 
+    on:keydown={(ev) => ctrlKey = ev.ctrlKey}
+    on:keyup={(ev) => ctrlKey = ev.ctrlKey}
+/>
 <svg width={w} height={h} viewBox="{Xmin-20} {Ymin-30} {Xrange+50} {Yrange+50}"
      xmlns="http://www.w3.org/2000/svg"
      font-size="0"
+	 class:grabbing
+     class:ctrl={ctrlKey && editable.addVertex}
      bind:this={svg}
+	 on:mousedown|preventDefault|self={addVertex}
 >
 	<!-- lines -->
-	{#each edges as edge (`${edge.v1} ${edge.v2}`)}
+	{#each edges as edge (edge)}
         {#if edge.v1 == edge.v2}
             <circle
                 transition:fade={{ duration }}
@@ -93,8 +203,10 @@ import { browser } from "$app/env";
                 fill="none"
                 stroke={edge.color ?? "silver"} 
                 stroke-width={(edge.weight ?? Wmax/2) / Wmax * 10}
+                on:click={() => removeEdge(edge)}
+                class:removable={editable.removeEdge}
             />
-            {#if edge.weight}
+            {#if edge.weight != null}
                 <text 
                     transition:fade={{ duration }}
                     x={vcoord[edge.v1][0] + 20} 
@@ -115,7 +227,8 @@ import { browser } from "$app/env";
                     text-anchor="middle" 
                     alignment-baseline="middle"
                     fill="white"
-                    class="resizable"
+                    class:resizable={editable.reweightEdge}
+                    use:reweightEdge={edge}
                 >{edge.weight}</text>
             {/if}
         {:else}
@@ -124,8 +237,10 @@ import { browser } from "$app/env";
                 points={`${vcoord[edge.v1]} ${vcoord[edge.v2]}`}
                 fill="none" stroke={edge.color ?? "silver"} 
                 stroke-width={(edge.weight ?? Wmax/2) / Wmax * 10}
+                on:click={() => removeEdge(edge)}
+                class:removable={editable.removeEdge}
             />
-            {#if edge.weight}
+            {#if edge.weight != null}
                 <text 
                     transition:fade={{ duration }}
                     {...middle(vcoord[edge.v1], vcoord[edge.v2], edge.v1)}
@@ -145,11 +260,19 @@ import { browser } from "$app/env";
                     text-anchor="middle" 
                     alignment-baseline="middle"
                     fill="white"
-                    class="resizable"
+                    class:resizable={editable.reweightEdge}
+                    use:reweightEdge={edge}
                 >{edge.weight}</text>
             {/if}
         {/if}
 	{/each}
+
+    {#if newEdge}
+        <polyline points="{vcoord[newEdge.v1]} {newEdge.x},{newEdge.y}"
+            fill="none" stroke="silver" stroke-width="5"
+            class="grabable"
+        />
+    {/if}
 		
 	<!-- points -->
 	{#each vertices as vertex}
@@ -159,8 +282,9 @@ import { browser } from "$app/env";
 			cy={vertex.y}
 			r="10" 
 			fill={vertex.color ?? "grey"}
-            use:grabable={vertex}
-            class="grabable"
+            use:moveVertex={vertex}
+            use:addEdge={vertex}
+            class:grabable={editable.moveVertex}
 		/>
 		<text 
 			transition:fade={{ duration }}
@@ -199,10 +323,25 @@ import { browser } from "$app/env";
 </svg>
 
 <style>
-	.grabable {
+	svg.ctrl {
+        cursor: copy;
+    }
+    .grabable {
 		cursor: grab;
 	}
+    .ctrl .grabable {
+        cursor: move;
+    }
+    .grabbing, .grabbing .grabable {
+        cursor: grabbing;
+    }
 	.grabable + text {
 		pointer-events: none;
+	}
+	.resizable {
+		cursor: ew-resize;
+	}
+	.removable {
+		cursor: no-drop;
 	}
 </style>

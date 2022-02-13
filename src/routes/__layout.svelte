@@ -50,7 +50,7 @@
         {/each}
     </ul>
 {/if}
-<main class:hide in:fade>
+<main class:hide>
     <slot/>
 </main>
 
@@ -119,6 +119,9 @@
         padding: 20px;
         overflow: auto;
         transition: opacity .2s;
+    }
+    main > :global(section ~ section) {
+        display: none !important;
     }
     :global(input) {
         font-size: 90%;
