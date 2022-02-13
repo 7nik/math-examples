@@ -1,7 +1,7 @@
 <script lang="ts">
     import { base } from '$app/paths';
     import { page } from '$app/stores';
-    import { fly, fade } from "svelte/transition";
+    import { fly } from "svelte/transition";
     import { beforeNavigate, afterNavigate } from "$app/navigation";
 
     const links = {
@@ -23,7 +23,7 @@
     // @ts-ignore
     $: active = Object.keys(links).find(link => $page.url.pathname.endsWith(link));
     $: title = `Дискретна математика • ${links[active] ?? "Головна"}`;
-    let showMenu = $page.url.pathname.endsWith("/");
+    let showMenu = false;
 
     let hide = false;
     beforeNavigate(() => hide = true);
@@ -38,7 +38,7 @@
     <span class="menu" on:click={() => showMenu = !showMenu}>☰</span> 
     <span>{title}</span>
 </header>
-{#if showMenu}
+{#if showMenu || $page.url.pathname.length <= base.length+1}
     <ul transition:fly={{ x:-350, duration:500, opacity:1 }} on:click={() => showMenu=false}>
         <h2>Сторінки</h2>
         {#each Object.entries(links) as [link, name]}
@@ -66,10 +66,9 @@
         height: 100%;
     }
     header {
-        /* border-bottom: 1px #8884 solid; */
         box-shadow: 2px 0 15px #8884;
         background: white;
-        z-index: 1;
+        z-index: 2;
     }
     header span {
         display: inline-block;
@@ -94,6 +93,7 @@
         box-shadow: 2px 0 30px #8884;
         overflow: auto;
         background: white;
+        z-index: 1;
     }
     li::marker {
         content: none;
