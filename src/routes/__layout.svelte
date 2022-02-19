@@ -22,6 +22,7 @@
             Kruskal: "Алгоритм Крускала",
             Prim: "Алгоритм Пріма",
             Dijkstra: "Алгоритм Дейкстри",
+            Prufer: "Алгоритм Прюфера",
         };
     });
     let active: keyof (typeof links);
