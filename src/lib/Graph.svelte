@@ -32,10 +32,10 @@
         }
 	}
 
-    $: Xmax = vertices.reduce((m,v) => m.x > v.x ? m : v).x;
-    $: Ymax = vertices.reduce((m,v) => m.y > v.y ? m : v).y;
-    $: Xmin = vertices.reduce((m,v) => m.x < v.x ? m : v).x;
-    $: Ymin = vertices.reduce((m,v) => m.y < v.y ? m : v).y;
+    $: Xmax = vertices.length === 0 ? 0 : vertices.reduce((m,v) => m.x > v.x ? m : v).x;
+    $: Ymax = vertices.length === 0 ? 0 : vertices.reduce((m,v) => m.y > v.y ? m : v).y;
+    $: Xmin = vertices.length === 0 ? 0 : vertices.reduce((m,v) => m.x < v.x ? m : v).x;
+    $: Ymin = vertices.length === 0 ? 0 : vertices.reduce((m,v) => m.y < v.y ? m : v).y;
     $: Wmax = edges.reduce((m,e) => Math.max(m, e.weight || 0), 0) || 50;
     $: Xrange = Xmax - Xmin;
     $: Yrange = Ymax - Ymin;
@@ -188,7 +188,7 @@
     on:keydown={(ev) => ctrlKey = ev.ctrlKey}
     on:keyup={(ev) => ctrlKey = ev.ctrlKey}
 />
-<svg width={w} height={h} viewBox="{Xmin-20} {Ymin-30} {Xrange+50} {Yrange+50}"
+<svg width={w||800} height={h||800} viewBox="{Xmin-20} {Ymin-30} {Xrange+50} {Yrange+50}"
      xmlns="http://www.w3.org/2000/svg"
      font-size="0"
 	 class:grabbing
@@ -279,7 +279,7 @@
     {/if}
 		
 	<!-- points -->
-	{#each vertices as vertex}
+	{#each vertices as vertex (vertex)}
 		<circle 
 			transition:fade={{ duration }}
 			cx={vertex.x}
@@ -348,4 +348,7 @@
 	.removable {
 		cursor: no-drop;
 	}
+    svg * {
+        transition: fill .3s;
+    }
 </style>
