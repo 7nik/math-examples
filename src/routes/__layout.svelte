@@ -39,6 +39,8 @@
 
 <svelte:head>
     <title>{title}</title>
+    <meta property="og:title" content="{title}" />
+    <meta property="og:locale" content="uk_UA" />
 </svelte:head>
 
 <header>
