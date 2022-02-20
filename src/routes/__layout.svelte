@@ -108,6 +108,9 @@
     li::marker {
         content: none;
     }
+    li:last-child {
+        padding-bottom: 2em;
+    }
     h2 {
         padding: 15px;
         margin: 0;

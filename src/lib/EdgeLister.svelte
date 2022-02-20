@@ -5,6 +5,7 @@
     export let edges:Edge[] = [];
     export let vertexNumber = 11;
     export let locked = false;
+    export let weighted = true;
     
     let v1 = 1, v2 = 2, weight = 10;
     function addEdge() {
@@ -13,7 +14,9 @@
             if (index >= 0) {
                 edges.splice(index, 1);
             }
-            edges = [...edges, { v1, v2, weight }];
+            const edge:Edge = { v1, v2 };
+            if (weighted) edge.weight = weight;
+            edges = [...edges, edge];
         }
     }
     function removeEdge(edge: Edge) {
@@ -36,9 +39,11 @@
         <input type="number" min="1" max={vertexNumber} bind:value={v1} />
         <input type="number" min="1" max={vertexNumber} bind:value={v2} />
         <br>
-        Вага:
-        <input type="number" min="1" max={vertexNumber} bind:value={weight} />
-        <br>
+        {#if weighted}
+            Вага:
+            <input type="number" min="1" max={vertexNumber} bind:value={weight} />
+            <br>
+        {/if}
         <button on:click={addEdge} disabled={locked}>Додати ребро</button>
     </div>
 </div>

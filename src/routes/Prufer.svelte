@@ -150,7 +150,7 @@
 </script>
 
 <section>
-    <EdgeLister bind:edges locked={searching} vertexNumber={vertices.length} />
+    <EdgeLister bind:edges locked={searching} vertexNumber={vertices.length} weighted={false} />
     <div>
         <Graph bind:vertices bind:edges editable={searching ? {} : {
             addVertex: true,
