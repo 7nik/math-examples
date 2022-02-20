@@ -12,6 +12,16 @@
         removeEdge?: boolean,
         reweightEdge?: boolean,
     } = {};
+    let editHint = "";
+    $: {
+        editHint = "";
+        if (editable.addVertex) editHint += "Ctrl-click - додати вершину у пустому місці\n";
+        if (editable.moveVertex) editHint +=  "Мишею можна перміщювати вершини" + (editable.addEdge ? " при натиснутому Ctrl":"") + "\n";
+        if (editable.addEdge) editHint += "Можна додати ребра (витягуючи їх з вершини)\n";
+        if (editable.removeEdge) editHint += "Можна прибирати ребра натискаючи на них\n";
+        if (editable.reweightEdge) editHint += "Можна змінювати вагу ребр тянучи за значення\n";
+        editHint = editHint.trim();
+    }
 
     let vcoord: Record<number, [number, number]>;
     $: {
@@ -196,6 +206,13 @@
      bind:this={svg}
 	 on:mousedown|preventDefault|self={addVertex}
 >
+    {#if editHint && vertices.length > 0}
+        <text x={Xmin} y={Ymin} fill="grey" font-size="10">
+            &#x1F6C8;
+            <title>{editHint}</title>
+        </text>
+    {/if}
+
 	<!-- lines -->
 	{#each edges as edge (edge)}
         {#if edge.v1 == edge.v2}
@@ -350,5 +367,8 @@
 	}
     svg * {
         transition: fill .3s;
+    }
+    text:first-child {
+        cursor: help;
     }
 </style>
