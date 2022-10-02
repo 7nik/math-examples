@@ -102,23 +102,40 @@
     let vertices2:Vertex[] = [], edges2:Edge[] = [];
     let code2:string = "", code3:number[] = [], anticode:{i:number,enabled:boolean}[] = [];
 
+    let startFromZero = true;
+    $: updateVertexNumbers(startFromZero);
+    function updateVertexNumbers(zero: boolean) {
+        const map = {} as Record<number, number>;
+        vertices = vertices.map((v, i) => {
+            const j = zero ? i : i+1;
+            map[v.i] = j;
+            v.i = j;
+            return v;
+        });
+        edges = edges.map((e) => {
+            e.v1 = map[e.v1];
+            e.v2 = map[e.v2];
+            return e;
+        });
+    }
+
     async function decodePrufer () {
         searching = true;
         code3 = (code2.match(/\d+/g) ?? []).map(Number);
         const n = code3.length + 2;
         anticode = Array(n).fill(0).map((_, i) => ({
-            i: i+1,
-            enabled: !code3.includes(i+1),
+            i: i + (startFromZero ? 0 : 1),
+            enabled: !code3.includes(i + (startFromZero ? 0 : 1)),
         }));
 
         const r = 50 / Math.sin(Math.PI / n);
         vertices2 = vertices.length === n 
-        ? vertices.map(({i,x,y}) => ({i,x,y}))
-        : Array(n).fill(0).map((_, i) => ({
-            i: i+1,
-            x: r + r*Math.cos(2*Math.PI*i/n),
-            y: r - r*Math.sin(2*Math.PI*i/n),
-        }));
+            ? vertices.map(({i,x,y}) => ({i,x,y}))
+            : Array(n).fill(0).map((_, i) => ({
+                i: i + (startFromZero ? 0 : 1),
+                x: r + r*Math.cos(2*Math.PI*i/n),
+                y: r - r*Math.sin(2*Math.PI*i/n),
+            }));
         edges2 = [];
         await sleep();
 
@@ -195,6 +212,10 @@
         <button on:click={decodePrufer} disabled={searching}>
             Побудувати дерево
         </button>
+        <label>
+            <input type="checkbox" bind:checked={startFromZero} disabled={searching}>
+            Перша вершина №0
+        </label>
         <br><br>
         <button on:click={nextstep} disabled={autopause}>
             Наступний крок
