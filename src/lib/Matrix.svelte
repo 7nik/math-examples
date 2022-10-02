@@ -39,7 +39,7 @@
 	}
 </script>
 
-<div style="--w: {colDir ? matrix.length : matrix[0].length}; --h: {colDir ? matrix[0].length : matrix.length}" 
+<div style="--w: {colDir ? matrix.length : matrix[0]?.length}; --h: {colDir ? matrix[0]?.length : matrix.length}" 
 	class:colDir class:showGrid
 >
 	{#each matrix as row, r}
