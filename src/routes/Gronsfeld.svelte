@@ -1,7 +1,7 @@
 <script lang="ts">
     import Matrix from "../lib/Matrix.svelte";
 
-    const alphabet = "АБВГДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯ_".split("");
+    const alphabet = "_АБВГДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯ".split("");
 
     function unify(str: string) {
         return str.toUpperCase()
@@ -19,18 +19,18 @@
     function encode(msg: string[], key: string) {
         const len = key.length;
         return msg.map((letter, i) => {
-            const pos = alphabet.indexOf(letter) + 1;
+            const pos = alphabet.indexOf(letter);
             const pos2 = (pos + Number(key[i % len])) % alphabet.length;
-            return [letter, pos, key[i % len], pos2, alphabet[pos2-1]];
+            return [letter, pos, key[i % len], pos2, alphabet[pos2]];
         });
     }
 
     function decode(msg: string[], key: string) {
         const len = key.length;
         return msg.map((letter, i) => {
-            const pos = alphabet.indexOf(letter) + 1;
+            const pos = alphabet.indexOf(letter);
             const pos2 = (pos - Number(key[i % len]) + alphabet.length) % alphabet.length;
-            return [letter, pos, key[i % len], pos2, alphabet[pos2-1]];
+            return [letter, pos, key[i % len], pos2, alphabet[pos2]];
         });
     }
 </script>
@@ -38,7 +38,7 @@
 <br>
 <Matrix matrix={[
     alphabet,
-    alphabet.map((_, i) => i+1)
+    alphabet.map((_, i) => i)
 ]} />
 <br>
 <b>Ключ</b>: <input type="number" bind:value={key}>
