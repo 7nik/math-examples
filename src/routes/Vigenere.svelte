@@ -82,7 +82,6 @@
 <b>Вхідний текст</b>:<br>
 <input bind:value={msg1} on:blur={mark1} on:focus={mark1} on:keyup={mark1} on:click={mark1} />
 <br>
-<b>Вихідний текст</b>:<br>
 <Matrix 
     matrix={[
         msg1U,
@@ -93,12 +92,13 @@
         cyan: [{ c:pos1, r:0 }, { c:pos1, r:1 }, { c:pos1, r:2 }]
     }}
 />
+<br>
+<b>Шифровка</b>: {encode(msg1U, keyU).join("")}
 
 <h1>Дешифрування</h1>
 <b>Вхідний текст</b>:<br>
 <input bind:value={msg2} on:blur={mark2} on:focus={mark2} on:keyup={mark2} on:click={mark2} />
 <br>
-<b>Вихідний текст</b>:<br>
 <Matrix 
     matrix={[
         msg2U,
@@ -109,6 +109,8 @@
         cyan: [{ c:pos2, r:0 }, { c:pos2, r:1 }, { c:pos2, r:2 }]
     }}
 />
+<br>
+<b>Текст</b>: {decode(msg2U, keyU).join("")}
 
 <style>
 </style>

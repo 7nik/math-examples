@@ -48,12 +48,14 @@
 <b>Вхідний текст</b>:<br>
 <input bind:value={msg1} />
 <br>
-<b>Вихідний текст</b>:<br>
 <Matrix matrix={encode(msg1U, key)} colDir={true} />
+<br>
+<b>Шифровка</b>: {encode(msg1U, key).map((val) => val[4]).join("")}
 
 <h1>Дешифрування</h1>
 <b>Вхідний текст</b>:<br>
 <input bind:value={msg2} />
 <br>
-<b>Вихідний текст</b>:<br>
 <Matrix matrix={decode(msg2U, key)} colDir={true} />
+<br>
+<b>Текст</b>: {decode(msg2U, key).map((val) => val[4]).join("")}
